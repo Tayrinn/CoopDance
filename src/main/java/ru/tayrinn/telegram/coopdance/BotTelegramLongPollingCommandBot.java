@@ -1,17 +1,19 @@
 package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class Bot extends TelegramLongPollingCommandBot {
+public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommandBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
 
-    public Bot(String botName, String botToken) {
+    public BotTelegramLongPollingCommandBot(String botName, String botToken) {
         BOT_NAME = botName;
         BOT_TOKEN = botToken;
     }
@@ -27,6 +29,10 @@ public class Bot extends TelegramLongPollingCommandBot {
         Long chatId = msg.getChatId();
         String userName = getUserName(msg);
 
+        if (update.hasInlineQuery()) {
+            handleInlineQuery(update);
+            return;
+        }
         setAnswer(chatId, userName, "Hello world!!1!!");
     }
 
@@ -38,6 +44,15 @@ public class Bot extends TelegramLongPollingCommandBot {
         User user = msg.getFrom();
         String userName = user.getUserName();
         return (userName != null) ? userName : String.format("%s %s", user.getLastName(), user.getFirstName());
+    }
+
+    private void handleInlineQuery(Update update) {
+        InlineQuery inlineQuery = update.getInlineQuery();
+        try {
+            execute(new BotInlineQuery(inlineQuery).answer());
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
