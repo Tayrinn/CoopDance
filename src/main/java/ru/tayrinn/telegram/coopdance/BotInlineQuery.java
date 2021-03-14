@@ -28,8 +28,7 @@ public class BotInlineQuery {
         for (int i = 0; i < 3; i++) {
             InlineQueryResultArticle article = new InlineQueryResultArticle();
             InputTextMessageContent messageContent = new InputTextMessageContent();
-            messageContent.setDisableWebPagePreview(false);
-            messageContent.setMessageText(inlineQuery.getQuery() + " " + i);
+            messageContent.setMessageText(i + ")");
             article.setInputMessageContent(messageContent);
             article.setId(Integer.toString(i));
             article.setTitle(Integer.toString(i));
