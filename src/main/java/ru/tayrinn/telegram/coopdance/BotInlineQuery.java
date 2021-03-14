@@ -15,7 +15,7 @@ public class BotInlineQuery {
         this.inlineQuery = inlineQuery;
     }
 
-    public SendMessage answer() {
+    public SendMessage answer(Long chatId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
@@ -33,7 +33,7 @@ public class BotInlineQuery {
         rowList.add(keyboardButtonsRow2);
         inlineKeyboardMarkup.setKeyboard(rowList);
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(inlineQuery.getId());
+        sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         sendMessage.setText(inlineQuery.getQuery());
         return sendMessage;

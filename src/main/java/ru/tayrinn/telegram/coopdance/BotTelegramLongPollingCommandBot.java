@@ -30,7 +30,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommand
         String userName = getUserName(msg);
 
         if (update.hasInlineQuery()) {
-            handleInlineQuery(update);
+            handleInlineQuery(update.getInlineQuery(), chatId);
             return;
         }
         setAnswer(chatId, userName, "Hello world!!1!!");
@@ -46,10 +46,9 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommand
         return (userName != null) ? userName : String.format("%s %s", user.getLastName(), user.getFirstName());
     }
 
-    private void handleInlineQuery(Update update) {
-        InlineQuery inlineQuery = update.getInlineQuery();
+    private void handleInlineQuery (InlineQuery inlineQuery, Long chatId) {
         try {
-            execute(new BotInlineQuery(inlineQuery).answer());
+            execute(new BotInlineQuery(inlineQuery).answer(chatId));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
