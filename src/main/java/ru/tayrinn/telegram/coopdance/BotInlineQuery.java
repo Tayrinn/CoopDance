@@ -35,7 +35,7 @@ public class BotInlineQuery {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        sendMessage.setText(inlineQuery.getQuery());
+        sendMessage.setText("Hello world");
         return sendMessage;
     }
 }
