@@ -29,11 +29,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommand
         Long chatId = msg.getChatId();
         String userName = getUserName(msg);
 
-//        if (update.hasInlineQuery()) {
         setAnswer(chatId, userName, "Hello world, " + userName + "!");
-        handleInlineQuery(update.getInlineQuery(), chatId);
-//            return;
-//        }
+        if (update.hasInlineQuery()) {
+            setAnswer(chatId, userName, "Has inline query, " + userName + "!");
+            handleInlineQuery(update.getInlineQuery(), chatId);
+            return;
+        }
 //        setAnswer(chatId, userName, "Hello world!!1!!");
     }
 
