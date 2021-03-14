@@ -18,22 +18,18 @@ public class BotInlineQuery {
     public SendMessage answer(Long chatId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
         inlineKeyboardButton1.setText("Тык");
         inlineKeyboardButton1.setCallbackData("Button \"Тык\" has been pressed");
-        inlineKeyboardButton2.setText("Тык2");
-        inlineKeyboardButton2.setCallbackData("Button \"Тык2\" has been pressed");
+
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
         keyboardButtonsRow1.add(inlineKeyboardButton1);
-        keyboardButtonsRow1.add(new InlineKeyboardButton("Fi4a"));
-        keyboardButtonsRow2.add(inlineKeyboardButton2);
+
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
         inlineKeyboardMarkup.setKeyboard(rowList);
+
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setChatId(chatId.toString());
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         sendMessage.setText("Hello world");
         return sendMessage;
