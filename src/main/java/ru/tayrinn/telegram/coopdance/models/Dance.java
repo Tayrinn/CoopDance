@@ -7,13 +7,23 @@ import java.util.List;
 
 public class Dance {
 
+    public final String message;
     public final String messageId;
-    private List<Dancer> girls = new ArrayList<>();
-    private List<Dancer> boys = new ArrayList<>();
-    private List<DancePair> pairs = new ArrayList<>();
+    private final List<Dancer> girls = new ArrayList<>();
+    private final List<Dancer> boys = new ArrayList<>();
+    private final List<DancePair> pairs = new ArrayList<>();
 
-    public Dance(String messageId) {
+    public Dance(String message, String messageId) {
+        this.message = message;
         this.messageId = messageId;
+    }
+
+    public void processCommand(String command, User user) {
+        switch (command) {
+            case Commands.ADD_GIRL : addGirl(user); break;
+            case Commands.ADD_BOY : addBoy(user); break;
+            default: // do nothing
+        }
     }
 
     public void addGirl(User user) {
@@ -32,7 +42,7 @@ public class Dance {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(message).append("\n\n");
         sb.append("Партнёрши:\n");
         girls.forEach(girl -> sb.append(girl).append("\n"));
         sb.append("\nПартнёры:\n");

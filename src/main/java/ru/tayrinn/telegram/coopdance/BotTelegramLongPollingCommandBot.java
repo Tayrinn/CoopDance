@@ -79,12 +79,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         String messageId = callbackQuery.getInlineMessageId();
 
         Dance dance = dances.getDanceByMessageId(messageId);
-        dance.addGirl(callbackQuery.getFrom());
+        dance.processCommand(callData, callbackQuery.getFrom());
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(sendKeyboard());
-        newMessage.setText(dance.toString());
+        newMessage.setText(callData + " " + dance.toString());
         try {
             execute(newMessage);
         } catch (TelegramApiException e) {
