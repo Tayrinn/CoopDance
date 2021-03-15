@@ -112,7 +112,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         List<InlineQueryResult> results = new ArrayList<>();
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();
-        messageContent.setMessageText("1) " + inlineQuery.getQuery());
+        messageContent.setMessageText("Коллективка " + inlineQuery.getQuery());
         article.setInputMessageContent(messageContent);
         article.setId("111");
         article.setTitle("Нажмите для создания голосовалки");
@@ -129,12 +129,17 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
 
     private InlineKeyboardMarkup sendKeyboard() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText("Тык2");
-        inlineKeyboardButton1.setCallbackData("button_pressed");
+        InlineKeyboardButton girl = new InlineKeyboardButton();
+        girl.setText("\uD83D\uDC83");
+        girl.setCallbackData("girl_only");
+
+        InlineKeyboardButton boy = new InlineKeyboardButton();
+        boy.setText("\uD83D\uDD7A");
+        boy.setCallbackData("boy_only");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(inlineKeyboardButton1);
+        keyboardButtonsRow1.add(girl);
+        keyboardButtonsRow1.add(boy);
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
