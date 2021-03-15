@@ -2,6 +2,7 @@ package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -9,6 +10,8 @@ import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+
+import static java.lang.Math.toIntExact;
 
 public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private final String BOT_NAME;
@@ -40,11 +43,18 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
             handleInlineQuery(update.getInlineQuery());
             return;
         } else if (update.hasCallbackQuery()) {
-            Message msg = update.getMessage();
-            Long chatId = msg.getChatId();
-            setAnswer(chatId, "Hello world!");
-            setAnswer(update.getCallbackQuery().getMessage().getChatId(), update.getCallbackQuery().getData());
-            return;
+            String callData = update.getCallbackQuery().getData();
+            long messageId = update.getCallbackQuery().getMessage().getMessageId();
+            String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
+            EditMessageText newMessage = new EditMessageText();
+            newMessage.setChatId(chatId);
+            newMessage.setMessageId(toIntExact(messageId));
+            newMessage.setText(callData);
+            try {
+                execute(newMessage);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }            return;
         }
         Message msg = update.getMessage();
         Long chatId = msg.getChatId();
