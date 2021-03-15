@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQuery
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.tayrinn.telegram.coopdance.models.Commands;
 import ru.tayrinn.telegram.coopdance.models.Dance;
 import ru.tayrinn.telegram.coopdance.models.Dances;
 
@@ -137,23 +138,23 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton girl = new InlineKeyboardButton();
         girl.setText("\uD83D\uDC83");
-        girl.setCallbackData("girl_only");
+        girl.setCallbackData(Commands.ADD_GIRL);
 
         InlineKeyboardButton boy = new InlineKeyboardButton();
         boy.setText("\uD83D\uDD7A");
-        boy.setCallbackData("boy_only");
+        boy.setCallbackData(Commands.ADD_BOY);
 
         InlineKeyboardButton girlAndBoy = new InlineKeyboardButton();
         girlAndBoy.setText("\uD83D\uDC83 и \uD83D\uDD7A");
-        girlAndBoy.setCallbackData("girl_and_boy");
+        girlAndBoy.setCallbackData(Commands.ADD_GIRL_AND_BOY);
 
         InlineKeyboardButton boyAndGirl = new InlineKeyboardButton();
         boyAndGirl.setText("\uD83D\uDD7A и \uD83D\uDC83");
-        boyAndGirl.setCallbackData("boy_and_girl");
+        boyAndGirl.setCallbackData(Commands.ADD_BOY_AND_GIRL);
 
         InlineKeyboardButton cancel = new InlineKeyboardButton();
         cancel.setText("\u274C");
-        cancel.setCallbackData("cancel");
+        cancel.setCallbackData(Commands.CANCEL);
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(girl);
