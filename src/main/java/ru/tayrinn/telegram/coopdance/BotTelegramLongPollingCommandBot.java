@@ -138,11 +138,11 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         boy.setCallbackData("boy_only");
 
         InlineKeyboardButton girlAndBoy = new InlineKeyboardButton();
-        girlAndBoy.setText("\uD83D\uDD7A и \uD83D\uDD7A");
+        girlAndBoy.setText("\uD83D\uDC83 и \uD83D\uDD7A");
         girlAndBoy.setCallbackData("girl_and_boy");
 
         InlineKeyboardButton boyAndGirl = new InlineKeyboardButton();
-        boyAndGirl.setText("\uD83D\uDD7A и \uD83D\uDD7A");
+        boyAndGirl.setText("\uD83D\uDD7A и \uD83D\uDC83");
         boyAndGirl.setCallbackData("boy_and_girl");
 
         InlineKeyboardButton cancel = new InlineKeyboardButton();
