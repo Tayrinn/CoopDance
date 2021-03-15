@@ -35,15 +35,15 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     }
 
     public void processNonCommandUpdate(Update update) {
+        if (update.hasInlineQuery()) {
+            //setAnswer(chatId, userName, "Has inline query, " + userName + "!");
+            handleInlineQuery(update.getInlineQuery(), 1L);
+            return;
+        }
         Message msg = update.getMessage();
         Long chatId = msg.getChatId();
         String userName = getUserName(msg);
 
-        if (update.hasInlineQuery()) {
-            //setAnswer(chatId, userName, "Has inline query, " + userName + "!");
-            handleInlineQuery(update.getInlineQuery(), chatId);
-            return;
-        }
         setAnswer(chatId, userName, "Hello world, " + userName + "!");
     }
 
