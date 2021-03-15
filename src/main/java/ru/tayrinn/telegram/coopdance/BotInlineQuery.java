@@ -24,16 +24,14 @@ public class BotInlineQuery {
 
     private AnswerInlineQuery sendInlineAnswer() {
         List<InlineQueryResult> results = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            InlineQueryResultArticle article = new InlineQueryResultArticle();
-            InputTextMessageContent messageContent = new InputTextMessageContent();
-            messageContent.setMessageText(i + ")" + inlineQuery.getQuery());
-            article.setInputMessageContent(messageContent);
-            article.setId(Integer.toString(i));
-            article.setTitle(Integer.toString(i));
-            article.setReplyMarkup(sendKeyboard());
-            results.add(article);
-        }
+        InlineQueryResultArticle article = new InlineQueryResultArticle();
+        InputTextMessageContent messageContent = new InputTextMessageContent();
+        messageContent.setMessageText("1) " + inlineQuery.getQuery());
+        article.setInputMessageContent(messageContent);
+        article.setId("111");
+        article.setTitle("Нажмите для создания голосовалки");
+        article.setReplyMarkup(sendKeyboard());
+        results.add(article);
 
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
         answerInlineQuery.setInlineQueryId(inlineQuery.getId());
