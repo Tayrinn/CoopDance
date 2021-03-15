@@ -59,7 +59,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
 
     private void handleInlineQuery (InlineQuery inlineQuery, Long chatId) {
         try {
-            execute(new BotInlineQuery(inlineQuery).answer(chatId));
+            execute(new BotInlineQuery(inlineQuery).answer());
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

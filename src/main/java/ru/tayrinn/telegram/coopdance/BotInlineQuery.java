@@ -1,7 +1,6 @@
 package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
@@ -19,11 +18,11 @@ public class BotInlineQuery {
         this.inlineQuery = inlineQuery;
     }
 
-    public AnswerInlineQuery answer(Long chatId) {
-        return sendInlineAnswer(chatId);
+    public AnswerInlineQuery answer() {
+        return sendInlineAnswer();
     }
 
-    private AnswerInlineQuery sendInlineAnswer(Long chatId) {
+    private AnswerInlineQuery sendInlineAnswer() {
         List<InlineQueryResult> results = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             InlineQueryResultArticle article = new InlineQueryResultArticle();
@@ -32,6 +31,7 @@ public class BotInlineQuery {
             article.setInputMessageContent(messageContent);
             article.setId(Integer.toString(i));
             article.setTitle(Integer.toString(i));
+            article.setReplyMarkup(sendKeyboard());
             results.add(article);
         }
 
@@ -39,10 +39,11 @@ public class BotInlineQuery {
         answerInlineQuery.setInlineQueryId(inlineQuery.getId());
         answerInlineQuery.setCacheTime(86400);
         answerInlineQuery.setResults(results);
+
         return answerInlineQuery;
     }
 
-    private SendMessage sendKeyboard(Long chatId) {
+    private InlineKeyboardMarkup sendKeyboard() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         inlineKeyboardButton1.setText("Тык");
@@ -55,10 +56,6 @@ public class BotInlineQuery {
         rowList.add(keyboardButtonsRow1);
         inlineKeyboardMarkup.setKeyboard(rowList);
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId.toString());
-        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        sendMessage.setText("Hello world");
-        return sendMessage;
+        return inlineKeyboardMarkup;
     }
 }
