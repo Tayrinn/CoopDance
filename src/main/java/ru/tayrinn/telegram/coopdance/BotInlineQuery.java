@@ -35,7 +35,7 @@ public class BotInlineQuery {
 
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
         answerInlineQuery.setInlineQueryId(inlineQuery.getId());
-        answerInlineQuery.setCacheTime(86400);
+        answerInlineQuery.setCacheTime(1000);
         answerInlineQuery.setResults(results);
 
         return answerInlineQuery;
@@ -44,7 +44,7 @@ public class BotInlineQuery {
     private InlineKeyboardMarkup sendKeyboard() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText("Тык");
+        inlineKeyboardButton1.setText("Тык2");
         inlineKeyboardButton1.setCallbackData("Button \"Тык\" has been pressed");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
