@@ -12,8 +12,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 
-import static java.lang.Math.toIntExact;
-
 public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
@@ -68,12 +66,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
 
     private void handleCallbackQuery(CallbackQuery callbackQuery) {
         String callData = callbackQuery.getData();
-        handleMessage(callbackQuery.getMessage());
-        long messageId = callbackQuery.getMessage().getMessageId();
-        String chatId = callbackQuery.getMessage().getChatId().toString();
+//        handleMessage(callbackQuery.getMessage());
+        String messageId = callbackQuery.getInlineMessageId();
+//        String chatId = callbackQuery.getMessage().getChatId().toString();
         EditMessageText newMessage = new EditMessageText();
-        newMessage.setChatId(chatId);
-        newMessage.setMessageId(toIntExact(messageId));
+//        newMessage.setChatId(chatId);
+        newMessage.setInlineMessageId(messageId);
         newMessage.setText(callData);
         try {
             execute(newMessage);

@@ -35,7 +35,7 @@ public class BotInlineQuery {
 
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
         answerInlineQuery.setInlineQueryId(inlineQuery.getId());
-        answerInlineQuery.setCacheTime(1000);
+        answerInlineQuery.setCacheTime(10000);
         answerInlineQuery.setResults(results);
 
         return answerInlineQuery;
