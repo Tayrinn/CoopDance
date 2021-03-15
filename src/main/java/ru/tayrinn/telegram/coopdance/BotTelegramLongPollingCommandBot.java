@@ -1,7 +1,6 @@
 package ru.tayrinn.telegram.coopdance;
 
-import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
-import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -11,7 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 
-public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommandBot {
+public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
 
@@ -26,11 +25,15 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommand
     }
 
     @Override
+    public void onUpdateReceived(Update update) {
+        processNonCommandUpdate(update);
+    }
+
+    @Override
     public void onUpdatesReceived(List<Update> updates) {
         updates.forEach(update -> processNonCommandUpdate(update));
     }
 
-    @Override
     public void processNonCommandUpdate(Update update) {
         Message msg = update.getMessage();
         Long chatId = msg.getChatId();
@@ -42,7 +45,6 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommand
             return;
         }
         setAnswer(chatId, userName, "Hello world, " + userName + "!");
-//        setAnswer(chatId, userName, "Hello world!!1!!");
     }
 
     /**
