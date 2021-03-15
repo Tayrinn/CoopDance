@@ -45,7 +45,7 @@ public class BotInlineQuery {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         inlineKeyboardButton1.setText("Тык2");
-        inlineKeyboardButton1.setCallbackData("Button \"Тык\" has been pressed");
+        inlineKeyboardButton1.setCallbackData("button_pressed");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(inlineKeyboardButton1);

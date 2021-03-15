@@ -3,6 +3,7 @@ package ru.tayrinn.telegram.coopdance;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -39,28 +40,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
 
     public void processNonCommandUpdate(Update update) {
         if (update.hasInlineQuery()) {
-            //setAnswer(chatId, userName, "Has inline query, " + userName + "!");
             handleInlineQuery(update.getInlineQuery());
-            return;
         } else if (update.hasCallbackQuery()) {
-            String callData = update.getCallbackQuery().getData();
-            long messageId = update.getCallbackQuery().getMessage().getMessageId();
-            String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
-            EditMessageText newMessage = new EditMessageText();
-            newMessage.setChatId(chatId);
-            newMessage.setMessageId(toIntExact(messageId));
-            newMessage.setText(callData);
-            try {
-                execute(newMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }            return;
+            handleCallbackQuery(update.getCallbackQuery());
+        } else if (update.hasMessage()) {
+            handleMessage(update.getMessage());
         }
-        Message msg = update.getMessage();
-        Long chatId = msg.getChatId();
-        String userName = getUserName(msg);
-
-        setAnswer(chatId, "Hello world, " + userName + "!");
     }
 
     /**
@@ -79,6 +64,28 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleCallbackQuery(CallbackQuery callbackQuery) {
+        String callData = callbackQuery.getData();
+        handleMessage(callbackQuery.getMessage());
+        long messageId = callbackQuery.getMessage().getMessageId();
+        String chatId = callbackQuery.getMessage().getChatId().toString();
+        EditMessageText newMessage = new EditMessageText();
+        newMessage.setChatId(chatId);
+        newMessage.setMessageId(toIntExact(messageId));
+        newMessage.setText(callData);
+        try {
+            execute(newMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleMessage(Message msg) {
+        Long chatId = msg.getChatId();
+        String userName = getUserName(msg);
+        setAnswer(chatId, "Hello world, " + userName + "!");
     }
 
     /**
