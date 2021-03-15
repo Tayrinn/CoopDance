@@ -78,7 +78,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(sendKeyboard());
-        newMessage.setText(newMessage.getText() + " " + callbackQuery.getFrom().getUserName());
+        newMessage.setText(callData + " " + callbackQuery.getFrom().getUserName());
         try {
             execute(newMessage);
         } catch (TelegramApiException e) {
@@ -137,9 +137,24 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         boy.setText("\uD83D\uDD7A");
         boy.setCallbackData("boy_only");
 
+        InlineKeyboardButton girlAndBoy = new InlineKeyboardButton();
+        boy.setText("\uD83D\uDD7A и \uD83D\uDD7A");
+        boy.setCallbackData("girl_and_boy");
+
+        InlineKeyboardButton boyAndGirl = new InlineKeyboardButton();
+        boy.setText("\uD83D\uDD7A и \uD83D\uDD7A");
+        boy.setCallbackData("boy_and_girl");
+
+        InlineKeyboardButton cancel = new InlineKeyboardButton();
+        boy.setText("❌");
+        boy.setCallbackData("cancel");
+
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(girl);
         keyboardButtonsRow1.add(boy);
+        keyboardButtonsRow1.add(girlAndBoy);
+        keyboardButtonsRow1.add(boyAndGirl);
+        keyboardButtonsRow1.add(cancel);
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
