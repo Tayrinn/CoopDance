@@ -9,6 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.List;
+
 public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommandBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
@@ -24,12 +26,18 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingCommand
     }
 
     @Override
+    public void onUpdatesReceived(List<Update> updates) {
+        updates.forEach(update -> processNonCommandUpdate(update));
+    }
+
+    @Override
     public void processNonCommandUpdate(Update update) {
         Message msg = update.getMessage();
         Long chatId = msg.getChatId();
         String userName = getUserName(msg);
 
         setAnswer(chatId, userName, "Hello world, " + userName + "!");
+
         if (update.hasInlineQuery()) {
             setAnswer(chatId, userName, "Has inline query, " + userName + "!");
             handleInlineQuery(update.getInlineQuery(), chatId);
