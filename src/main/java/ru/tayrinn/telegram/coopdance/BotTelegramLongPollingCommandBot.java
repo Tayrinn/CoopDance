@@ -37,14 +37,17 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     public void processNonCommandUpdate(Update update) {
         if (update.hasInlineQuery()) {
             //setAnswer(chatId, userName, "Has inline query, " + userName + "!");
-            handleInlineQuery(update.getInlineQuery(), 1L);
+            handleInlineQuery(update.getInlineQuery());
+            return;
+        } else if (update.hasCallbackQuery()){
+            setAnswer(update.getCallbackQuery().getMessage().getChatId(), update.getCallbackQuery().getData());
             return;
         }
         Message msg = update.getMessage();
         Long chatId = msg.getChatId();
         String userName = getUserName(msg);
 
-        setAnswer(chatId, userName, "Hello world, " + userName + "!");
+        setAnswer(chatId, "Hello world, " + userName + "!");
     }
 
     /**
@@ -57,7 +60,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         return (userName != null) ? userName : String.format("%s %s", user.getLastName(), user.getFirstName());
     }
 
-    private void handleInlineQuery (InlineQuery inlineQuery, Long chatId) {
+    private void handleInlineQuery(InlineQuery inlineQuery) {
         try {
             execute(new BotInlineQuery(inlineQuery).answer());
         } catch (TelegramApiException e) {
@@ -68,10 +71,9 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     /**
      * Отправка ответа
      * @param chatId id чата
-     * @param userName имя пользователя
      * @param text текст ответа
      */
-    private void setAnswer(Long chatId, String userName, String text) {
+    private void setAnswer(Long chatId, String text) {
         SendMessage answer = new SendMessage();
         answer.setText(text);
         answer.setChatId(chatId.toString());
