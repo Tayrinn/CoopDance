@@ -1,6 +1,7 @@
 package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -8,8 +9,14 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
@@ -58,7 +65,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
 
     private void handleInlineQuery(InlineQuery inlineQuery) {
         try {
-            execute(new BotInlineQuery(inlineQuery).answer());
+            execute(sendInlineAnswer(inlineQuery));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
@@ -66,13 +73,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
 
     private void handleCallbackQuery(CallbackQuery callbackQuery) {
         String callData = callbackQuery.getData();
-//        handleMessage(callbackQuery.getMessage());
         String messageId = callbackQuery.getInlineMessageId();
-//        String chatId = callbackQuery.getMessage().getChatId().toString();
+
         EditMessageText newMessage = new EditMessageText();
-//        newMessage.setChatId(chatId);
         newMessage.setInlineMessageId(messageId);
-        newMessage.setText(callData);
+        newMessage.setReplyMarkup(sendKeyboard());
+        newMessage.setText(newMessage.getText() + " " + callbackQuery.getFrom().getUserName());
         try {
             execute(newMessage);
         } catch (TelegramApiException e) {
@@ -100,6 +106,41 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             //логируем сбой Telegram Bot API, используя userName
         }
+    }
+
+    private AnswerInlineQuery sendInlineAnswer(InlineQuery inlineQuery) {
+        List<InlineQueryResult> results = new ArrayList<>();
+        InlineQueryResultArticle article = new InlineQueryResultArticle();
+        InputTextMessageContent messageContent = new InputTextMessageContent();
+        messageContent.setMessageText("1) " + inlineQuery.getQuery());
+        article.setInputMessageContent(messageContent);
+        article.setId("111");
+        article.setTitle("Нажмите для создания голосовалки");
+        article.setReplyMarkup(sendKeyboard());
+        results.add(article);
+
+        AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
+        answerInlineQuery.setInlineQueryId(inlineQuery.getId());
+        answerInlineQuery.setCacheTime(10000);
+        answerInlineQuery.setResults(results);
+
+        return answerInlineQuery;
+    }
+
+    private InlineKeyboardMarkup sendKeyboard() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
+        inlineKeyboardButton1.setText("Тык2");
+        inlineKeyboardButton1.setCallbackData("button_pressed");
+
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        keyboardButtonsRow1.add(inlineKeyboardButton1);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        return inlineKeyboardMarkup;
     }
 
     @Override
