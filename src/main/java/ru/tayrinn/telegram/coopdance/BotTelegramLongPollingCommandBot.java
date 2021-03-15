@@ -15,6 +15,8 @@ import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQuery
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.tayrinn.telegram.coopdance.models.Dance;
+import ru.tayrinn.telegram.coopdance.models.Dances;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
+    private final Dances dances = new Dances();
 
     public BotTelegramLongPollingCommandBot(String botName, String botToken) {
         BOT_NAME = botName;
@@ -75,10 +78,13 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         String callData = callbackQuery.getData();
         String messageId = callbackQuery.getInlineMessageId();
 
+        Dance dance = dances.getDanceByMessageId(messageId);
+        dance.addGirl(callbackQuery.getFrom());
+
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(sendKeyboard());
-        newMessage.setText(callData + " " + callbackQuery.getFrom().getUserName());
+        newMessage.setText(dance.toString());
         try {
             execute(newMessage);
         } catch (TelegramApiException e) {
