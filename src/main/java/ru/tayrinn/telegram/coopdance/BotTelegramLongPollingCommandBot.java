@@ -146,7 +146,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         boy.setCallbackData("boy_and_girl");
 
         InlineKeyboardButton cancel = new InlineKeyboardButton();
-        boy.setText("❌");
+        boy.setText("\u274C");
         boy.setCallbackData("cancel");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
