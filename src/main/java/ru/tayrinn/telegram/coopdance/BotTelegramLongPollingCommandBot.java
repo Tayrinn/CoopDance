@@ -1,6 +1,7 @@
 package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -102,22 +103,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     }
 
     private void sendInlineAnswer(String commamd, CallbackQuery callbackQuery) {
-        List<InlineQueryResult> results = new ArrayList<>();
-        InlineQueryResultArticle article = new InlineQueryResultArticle();
-        InputTextMessageContent messageContent = new InputTextMessageContent();
-        messageContent.setMessageText("Тестируем переходы");
-        article.setInputMessageContent(messageContent);
-        article.setId("111");
+        AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
+        answerCallbackQuery.setCallbackQueryId(callbackQuery.getId());
+        answerCallbackQuery.setUrl("t.me/CoopDanceBot?start=" + commamd);
 
-        article.setTitle("Нажмите для создания голосовалки");
-        results.add(article);
-        AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
-        answerInlineQuery.setInlineQueryId(callbackQuery.getInlineMessageId());
-        answerInlineQuery.setCacheTime(10000);
-        answerInlineQuery.setSwitchPmText(commamd);
-        answerInlineQuery.setResults(results);
         try {
-            execute(answerInlineQuery);
+            execute(answerCallbackQuery);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
