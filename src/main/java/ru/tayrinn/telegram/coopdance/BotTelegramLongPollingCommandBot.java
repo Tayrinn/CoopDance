@@ -1,42 +1,23 @@
 package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
-import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.tayrinn.telegram.coopdance.models.Commands;
-import ru.tayrinn.telegram.coopdance.models.Dance;
-import ru.tayrinn.telegram.coopdance.models.Dances;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
     private final String DATABASE_URL;
-    private final Dances dances = new Dances();
     private final BotCommandsController botCommandsController;
 
     public BotTelegramLongPollingCommandBot(String botName, String botToken, String database_url) {
         BOT_NAME = botName;
         BOT_TOKEN = botToken;
         DATABASE_URL = database_url;
-        botCommandsController = new BotCommandsController(new TelegramCommandsExecotorImpl());
+        botCommandsController = new BotCommandsController(new TelegramCommandsExecutorImpl());
     }
 
     @Override
@@ -56,159 +37,6 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
 
     public void processNonCommandUpdate(Update update) {
         botCommandsController.handle(update);
-//        if (update.hasInlineQuery()) {
-//            handleInlineQuery(update.getInlineQuery());
-//        } else if (update.hasCallbackQuery()) {
-//            handleCallbackQuery(update.getCallbackQuery());
-//        } else if (update.hasMessage()) {
-//            handleMessage(update.getMessage());
-//        }
-    }
-
-    /**
-     * Формирование имени пользователя
-     * @param msg сообщение
-     */
-    private String getUserName(Message msg) {
-        User user = msg.getFrom();
-        String userName = user.getUserName();
-        return (userName != null) ? userName : String.format("%s %s", user.getLastName(), user.getFirstName());
-    }
-
-    private void handleInlineQuery(InlineQuery inlineQuery) {
-        try {
-            execute(sendInlineAnswer(inlineQuery));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleCallbackQuery(CallbackQuery callbackQuery) {
-        String callData = callbackQuery.getData();
-        String messageId = callbackQuery.getInlineMessageId();
-        String command = Commands.parseCommand(callData);
-        Dance dance = dances.addDance(Commands.parseSystemInfo(callData), messageId);
-        dance.processCommand(command, callbackQuery.getFrom());
-
-        switch (command) {
-            case Commands.ADD_GIRL_AND_BOY:
-            case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(command + "-" + messageId, callbackQuery); break;
-        }
-
-        EditMessageText newMessage = new EditMessageText();
-        newMessage.setInlineMessageId(messageId);
-        newMessage.setReplyMarkup(sendKeyboard(dance.message));
-        newMessage.setParseMode(ParseMode.HTML);
-        newMessage.setText(dance.toString());
-        try {
-            execute(newMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sendInlineAnswer(String commamd, CallbackQuery callbackQuery) {
-        AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
-        answerCallbackQuery.setCallbackQueryId(callbackQuery.getId());
-        answerCallbackQuery.setUrl("t.me/CoopDanceBot?start=" + commamd);
-
-        try {
-            execute(answerCallbackQuery);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleStartMessage(Message msg) {
-        SendMessage answer = new SendMessage();
-        answer.setText("Это сообщение ответ на старт");
-        answer.setChatId(msg.getChatId().toString());
-        try {
-            execute(answer);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleMessage(Message msg) {
-        Long chatId = msg.getChatId();
-        setAnswer(chatId.toString(), "Hello world, " + msg.getText() + "!");
-        if (msg.getText().startsWith("/start")) {
-            handleStartMessage(msg);
-        }
-    }
-
-    /**
-     * Отправка ответа
-     * @param chatId id чата
-     * @param text текст ответа
-     */
-    private void setAnswer(String chatId, String text) {
-        SendMessage answer = new SendMessage();
-        answer.setText(text);
-        answer.setChatId(chatId);
-        try {
-            execute(answer);
-        } catch (TelegramApiException e) {
-            //логируем сбой Telegram Bot API, используя userName
-        }
-    }
-
-    private AnswerInlineQuery sendInlineAnswer(InlineQuery inlineQuery) {
-        List<InlineQueryResult> results = new ArrayList<>();
-        InlineQueryResultArticle article = new InlineQueryResultArticle();
-        InputTextMessageContent messageContent = new InputTextMessageContent();
-        messageContent.setMessageText(inlineQuery.getQuery());
-        article.setInputMessageContent(messageContent);
-        article.setId("111");
-
-        article.setTitle("Нажмите для создания голосовалки");
-        article.setReplyMarkup(sendKeyboard(inlineQuery.getQuery()));
-        results.add(article);
-
-        AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
-        answerInlineQuery.setInlineQueryId(inlineQuery.getId());
-        answerInlineQuery.setCacheTime(10000);
-        answerInlineQuery.setResults(results);
-
-        return answerInlineQuery;
-    }
-
-    private InlineKeyboardMarkup sendKeyboard(String systemInfo) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton girl = new InlineKeyboardButton();
-        girl.setText("\uD83D\uDC83");
-        girl.setCallbackData(Commands.format(Commands.ADD_GIRL, systemInfo));
-
-        InlineKeyboardButton boy = new InlineKeyboardButton();
-        boy.setText("\uD83D\uDD7A");
-        boy.setCallbackData(Commands.format(Commands.ADD_BOY, systemInfo));
-
-        InlineKeyboardButton girlAndBoy = new InlineKeyboardButton();
-        girlAndBoy.setText("\uD83D\uDC83 + \uD83D\uDD7A");
-        girlAndBoy.setCallbackData(Commands.format(Commands.ADD_GIRL_AND_BOY, systemInfo));
-
-        InlineKeyboardButton boyAndGirl = new InlineKeyboardButton();
-        boyAndGirl.setText("\uD83D\uDD7A + \uD83D\uDC83");
-        boyAndGirl.setCallbackData(Commands.format(Commands.ADD_BOY_AND_GIRL, systemInfo));
-
-        InlineKeyboardButton cancel = new InlineKeyboardButton();
-        cancel.setText("\u274C");
-        cancel.setCallbackData(Commands.format(Commands.CANCEL, systemInfo));
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(girl);
-        keyboardButtonsRow1.add(boy);
-        keyboardButtonsRow1.add(girlAndBoy);
-        keyboardButtonsRow1.add(boyAndGirl);
-        keyboardButtonsRow1.add(cancel);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return inlineKeyboardMarkup;
     }
 
     @Override
@@ -216,7 +44,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         return BOT_TOKEN;
     }
 
-    private class TelegramCommandsExecotorImpl extends TelegramCommandsExecutor {
+    private class TelegramCommandsExecutorImpl extends TelegramCommandsExecutor {
 
         @Override
         public void send(BotApiMethod method) {
