@@ -80,12 +80,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         String callData = callbackQuery.getData();
         String messageId = callbackQuery.getInlineMessageId();
 
-        Dance dance = dances.getDanceByMessageId(messageId);
-        dance.processCommand(callData, callbackQuery.getFrom());
+        Dance dance = dances.addDance(Commands.parseSystemInfo(callData), messageId);
+        dance.processCommand(Commands.parseCommand(callData), callbackQuery.getFrom());
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
-        newMessage.setReplyMarkup(sendKeyboard());
+        newMessage.setReplyMarkup(sendKeyboard(dance.message));
         newMessage.setParseMode(ParseMode.HTML);
         newMessage.setText(callData + " " + messageId + " " + dance.toString());
         try {
@@ -121,13 +121,12 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         List<InlineQueryResult> results = new ArrayList<>();
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();
-        messageContent.setMessageText(inlineQuery.getQuery() + " " + article.getId());
-        dances.addDance(inlineQuery.getQuery(), article.getId());
+        messageContent.setMessageText(inlineQuery.getQuery());
         article.setInputMessageContent(messageContent);
         article.setId("111");
 
         article.setTitle("Нажмите для создания голосовалки");
-        article.setReplyMarkup(sendKeyboard());
+        article.setReplyMarkup(sendKeyboard(inlineQuery.getQuery()));
         results.add(article);
 
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
@@ -138,27 +137,27 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         return answerInlineQuery;
     }
 
-    private InlineKeyboardMarkup sendKeyboard() {
+    private InlineKeyboardMarkup sendKeyboard(String systemInfo) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton girl = new InlineKeyboardButton();
         girl.setText("\uD83D\uDC83");
-        girl.setCallbackData(Commands.ADD_GIRL);
+        girl.setCallbackData(Commands.format(Commands.ADD_GIRL, systemInfo));
 
         InlineKeyboardButton boy = new InlineKeyboardButton();
         boy.setText("\uD83D\uDD7A");
-        boy.setCallbackData(Commands.ADD_BOY);
+        boy.setCallbackData(Commands.format(Commands.ADD_BOY, systemInfo));
 
         InlineKeyboardButton girlAndBoy = new InlineKeyboardButton();
         girlAndBoy.setText("\uD83D\uDC83 + \uD83D\uDD7A");
-        girlAndBoy.setCallbackData(Commands.ADD_GIRL_AND_BOY);
+        girlAndBoy.setCallbackData(Commands.format(Commands.ADD_GIRL_AND_BOY, systemInfo));
 
         InlineKeyboardButton boyAndGirl = new InlineKeyboardButton();
         boyAndGirl.setText("\uD83D\uDD7A + \uD83D\uDC83");
-        boyAndGirl.setCallbackData(Commands.ADD_BOY_AND_GIRL);
+        boyAndGirl.setCallbackData(Commands.format(Commands.ADD_BOY_AND_GIRL, systemInfo));
 
         InlineKeyboardButton cancel = new InlineKeyboardButton();
         cancel.setText("\u274C");
-        cancel.setCallbackData(Commands.CANCEL);
+        cancel.setCallbackData(Commands.format(Commands.CANCEL, systemInfo));
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(girl);
