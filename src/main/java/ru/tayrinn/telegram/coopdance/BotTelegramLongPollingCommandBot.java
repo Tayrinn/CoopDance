@@ -85,7 +85,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(sendKeyboard());
-        newMessage.setText(callData + " " + dance.toString());
+        newMessage.setText(callData + " " + messageId + " " + dance.toString());
         try {
             execute(newMessage);
         } catch (TelegramApiException e) {
@@ -120,7 +120,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();
         messageContent.setMessageText(inlineQuery.getQuery());
-        dances.addDance(inlineQuery.getQuery(), inlineQuery.getId());
+        dances.addDance(inlineQuery.getQuery() + " " + inlineQuery.getId(), inlineQuery.getId());
         article.setInputMessageContent(messageContent);
         article.setId("111");
         article.setTitle("Нажмите для создания голосовалки");
