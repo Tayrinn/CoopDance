@@ -79,17 +79,36 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private void handleCallbackQuery(CallbackQuery callbackQuery) {
         String callData = callbackQuery.getData();
         String messageId = callbackQuery.getInlineMessageId();
-
+        String command = Commands.parseCommand(callData);
         Dance dance = dances.addDance(Commands.parseSystemInfo(callData), messageId);
-        dance.processCommand(Commands.parseCommand(callData), callbackQuery.getFrom());
+        dance.processCommand(command, callbackQuery.getFrom());
+
+        switch (command) {
+            case Commands.ADD_GIRL_AND_BOY:
+            case Commands.ADD_BOY_AND_GIRL:
+                sendInlineAnswer(command, callbackQuery); break;
+        }
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(sendKeyboard(dance.message));
         newMessage.setParseMode(ParseMode.HTML);
-        newMessage.setText(callData + " " + messageId + " " + dance.toString());
+        newMessage.setText(dance.toString());
         try {
             execute(newMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendInlineAnswer(String commamd, CallbackQuery callbackQuery) {
+        AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
+        answerInlineQuery.setInlineQueryId(callbackQuery.getInlineMessageId());
+        answerInlineQuery.setCacheTime(10000);
+        answerInlineQuery.setSwitchPmText(commamd);
+
+        try {
+            execute(answerInlineQuery);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
