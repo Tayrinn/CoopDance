@@ -121,8 +121,8 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         List<InlineQueryResult> results = new ArrayList<>();
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();
-        messageContent.setMessageText(inlineQuery.getQuery() + " " + inlineQuery.getId());
-        dances.addDance(inlineQuery.getQuery(), inlineQuery.getId());
+        messageContent.setMessageText(inlineQuery.getQuery() + " " + article.getId());
+        dances.addDance(inlineQuery.getQuery(), article.getId());
         article.setInputMessageContent(messageContent);
         article.setId("111");
 
