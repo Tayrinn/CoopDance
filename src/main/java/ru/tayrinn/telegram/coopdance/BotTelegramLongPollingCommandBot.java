@@ -2,6 +2,7 @@ package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -85,6 +86,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(sendKeyboard());
+        newMessage.setParseMode(ParseMode.HTML);
         newMessage.setText(callData + " " + messageId + " " + dance.toString());
         try {
             execute(newMessage);
@@ -119,10 +121,11 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         List<InlineQueryResult> results = new ArrayList<>();
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();
-        messageContent.setMessageText(inlineQuery.getQuery());
-        dances.addDance(inlineQuery.getQuery() + " " + inlineQuery.getId(), inlineQuery.getId());
+        messageContent.setMessageText(inlineQuery.getQuery() + " " + inlineQuery.getId());
+        dances.addDance(inlineQuery.getQuery(), inlineQuery.getId());
         article.setInputMessageContent(messageContent);
         article.setId("111");
+
         article.setTitle("Нажмите для создания голосовалки");
         article.setReplyMarkup(sendKeyboard());
         results.add(article);
