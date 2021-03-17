@@ -40,6 +40,8 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
         Dance dance = dances.addDance(Commands.parseSystemInfo(callData), messageId);
         dance.processCommand(command, callbackQuery.getFrom());
 
+        parseCommand();
+
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(keyboardFactory.createStarterKeyboard(dance.message));
@@ -48,8 +50,7 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
         return newMessage;
     }
 
-    private void parseCommand(String callData) {
-
+    private void parseCommand() {
         switch (command) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
