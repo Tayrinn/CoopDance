@@ -117,7 +117,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private void handleMessage(Message msg) {
         Long chatId = msg.getChatId();
         String userName = getUserName(msg);
-        setAnswer(chatId, "Hello world, " + userName + "!");
+        setAnswer(chatId.toString(), "Hello world, " + msg.getText() + "!");
     }
 
     /**
@@ -125,7 +125,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
      * @param chatId id чата
      * @param text текст ответа
      */
-    private void setAnswer(Long chatId, String text) {
+    private void setAnswer(String chatId, String text) {
         SendMessage answer = new SendMessage();
         answer.setText(text);
         answer.setChatId(chatId.toString());
