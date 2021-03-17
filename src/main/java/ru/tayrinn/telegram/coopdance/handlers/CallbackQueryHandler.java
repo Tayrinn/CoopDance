@@ -1,23 +1,25 @@
 package ru.tayrinn.telegram.coopdance.handlers;
 
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
+import ru.tayrinn.telegram.coopdance.models.CallbackData;
 import ru.tayrinn.telegram.coopdance.models.Commands;
 import ru.tayrinn.telegram.coopdance.models.Dance;
 import ru.tayrinn.telegram.coopdance.models.Dances;
 
+/**
+ * Класс для обработки коллбеков - событий при нажатии на кнопки бота
+ */
 public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
 
     private final Dances dances;
-    private String callData;
-    private String messageId;
-    private String command;
+    private CallbackData callbackData; // данные, которые зашиваются в кнопку при создании
     private CallbackQuery callbackQuery;
+    private String messageId;
 
     public CallbackQueryHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, Dances dances) {
         super(telegramCommandsExecutor, keyboardFactory);
@@ -25,37 +27,38 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
     }
 
     @Override
-    public BotApiMethod handle(CallbackQuery data) {
+    public void handle(CallbackQuery data) {
         callbackQuery = data;
-        callData = data.getData();
+        String callData = data.getData();
         messageId = data.getInlineMessageId();
-        command = Commands.parseCommand(callData);
-
-        EditMessageText editMessageText = createEditMessage(data);
-        telegramCommandsExecutor.send(editMessageText);
-        return editMessageText;
-    }
-
-    private EditMessageText createEditMessage(CallbackQuery callbackQuery) {
-        Dance dance = dances.addDance(Commands.parseSystemInfo(callData), messageId);
-        dance.processCommand(command, callbackQuery.getFrom());
+        callbackData = Commands.parseCommand(callData);
 
         parseCommand();
+    }
+
+    private void parseCommand() {
+        switch (callbackData.command) {
+            case Commands.ADD_GIRL_AND_BOY:
+            case Commands.ADD_BOY_AND_GIRL:
+                sendInlineAnswer(callbackData.command + "-" + messageId, callbackQuery); break;
+            case Commands.ADD_GIRL :
+            case Commands.ADD_BOY :
+                addSingleDancer();
+                break;
+        }
+    }
+
+    private void addSingleDancer() {
+        Dance dance = dances.addDance(callbackData.command, messageId);
+        dance.processCommand(callbackData.command, callbackQuery.getFrom());
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(keyboardFactory.createStarterKeyboard(dance.message));
         newMessage.setParseMode(ParseMode.HTML);
         newMessage.setText(dance.toString());
-        return newMessage;
-    }
 
-    private void parseCommand() {
-        switch (command) {
-            case Commands.ADD_GIRL_AND_BOY:
-            case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(command + "-" + messageId, callbackQuery); break;
-        }
+        telegramCommandsExecutor.send(newMessage);
     }
 
     private void sendInlineAnswer(String command, CallbackQuery callbackQuery) {

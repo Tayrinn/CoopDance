@@ -1,7 +1,6 @@
 package ru.tayrinn.telegram.coopdance.handlers;
 
 import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
@@ -14,19 +13,20 @@ import java.util.List;
 
 public class InlineQueryHandler extends BotCommandsHandler<InlineQuery> {
 
-
     public InlineQueryHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory) {
         super(telegramCommandsExecutor, keyboardFactory);
     }
 
     @Override
-    public BotApiMethod handle(InlineQuery data) {
-        AnswerInlineQuery query = createAnswer(data);
+    public void handle(InlineQuery data) {
+        AnswerInlineQuery query = createShortcutAnswer(data);
         telegramCommandsExecutor.send(query);
-        return query;
     }
 
-    private AnswerInlineQuery createAnswer(InlineQuery inlineQuery) {
+    /**
+     * Создает ответ в inline mode - когда внутри строки набираешь имя бота
+     */
+    private AnswerInlineQuery createShortcutAnswer(InlineQuery inlineQuery) {
         List<InlineQueryResult> results = new ArrayList<>();
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();

@@ -1,6 +1,5 @@
 package ru.tayrinn.telegram.coopdance.handlers;
 
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
@@ -12,9 +11,8 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         super(telegramCommandsExecutor, keyboardFactory);
     }
 
-    public BotApiMethod handle(Message data) {
+    public void handle(Message data) {
         handleMessage(data);
-        return null;
     }
 
     private void handleStartMessage(Message msg) {
