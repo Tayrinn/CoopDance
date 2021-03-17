@@ -102,11 +102,20 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     }
 
     private void sendInlineAnswer(String commamd, CallbackQuery callbackQuery) {
+        List<InlineQueryResult> results = new ArrayList<>();
+        InlineQueryResultArticle article = new InlineQueryResultArticle();
+        InputTextMessageContent messageContent = new InputTextMessageContent();
+        messageContent.setMessageText("Тестируем переходы");
+        article.setInputMessageContent(messageContent);
+        article.setId("111");
+
+        article.setTitle("Нажмите для создания голосовалки");
+        results.add(article);
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
         answerInlineQuery.setInlineQueryId(callbackQuery.getInlineMessageId());
         answerInlineQuery.setCacheTime(10000);
         answerInlineQuery.setSwitchPmText(commamd);
-
+        answerInlineQuery.setResults(results);
         try {
             execute(answerInlineQuery);
         } catch (TelegramApiException e) {
