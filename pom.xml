@@ -15,6 +15,7 @@
         <org.projectlombok.version>1.18.16</org.projectlombok.version>
         <apache.poi.version>4.1.2</apache.poi.version>
         <telegram.version>5.0.1</telegram.version>
+        <postrgresql.version>42.2.1</postrgresql.version>
     </properties>
 
     <dependencies>
@@ -28,6 +29,11 @@
             <groupId>org.telegram</groupId>
             <artifactId>telegrambotsextensions</artifactId>
             <version>${telegram.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postrgresql.version}</version>
         </dependency>
     </dependencies>
     <build>

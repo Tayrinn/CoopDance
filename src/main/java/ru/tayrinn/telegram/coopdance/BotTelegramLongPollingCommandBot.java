@@ -27,11 +27,13 @@ import java.util.List;
 public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
+    private final String DATABASE_URL;
     private final Dances dances = new Dances();
 
-    public BotTelegramLongPollingCommandBot(String botName, String botToken) {
+    public BotTelegramLongPollingCommandBot(String botName, String botToken, String database_url) {
         BOT_NAME = botName;
         BOT_TOKEN = botToken;
+        DATABASE_URL = database_url;
     }
 
     @Override
@@ -87,7 +89,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         switch (command) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(command, callbackQuery); break;
+                sendInlineAnswer(command + "," + messageId, callbackQuery); break;
         }
 
         EditMessageText newMessage = new EditMessageText();
@@ -114,10 +116,23 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         }
     }
 
+    private void handleStartMessage(Message msg) {
+        SendMessage answer = new SendMessage();
+        answer.setText("Это сообщение ответ на старт");
+        answer.setChatId(msg.getChatId().toString());
+        try {
+            execute(answer);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleMessage(Message msg) {
         Long chatId = msg.getChatId();
-        String userName = getUserName(msg);
         setAnswer(chatId.toString(), "Hello world, " + msg.getText() + "!");
+        if (msg.getText().startsWith("/start")) {
+            handleStartMessage(msg);
+        }
     }
 
     /**
@@ -128,7 +143,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private void setAnswer(String chatId, String text) {
         SendMessage answer = new SendMessage();
         answer.setText(text);
-        answer.setChatId(chatId.toString());
+        answer.setChatId(chatId);
         try {
             execute(answer);
         } catch (TelegramApiException e) {

@@ -12,7 +12,10 @@ public class CoopDanceBotApplication {
     public static void main(String[] args) {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(new BotTelegramLongPollingCommandBot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
+            botsApi.registerBot(new BotTelegramLongPollingCommandBot(
+                    getenv.get("BOT_NAME"),
+                    getenv.get("BOT_TOKEN"),
+                    getenv.get("DATABASE_URL")));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
