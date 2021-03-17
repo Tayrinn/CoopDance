@@ -61,13 +61,14 @@ public class Dance {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(message).append("\n\n");
-        sb.append("\nПары:\n");
+        sb.append("\uD83D\uDD7A+\uD83D\uDC83:\n");
         pairs.forEach(pair -> sb.append(pair).append("\n"));
 
-        sb.append("Партнёрши:\n");
-        girls.forEach(girl -> sb.append(girl).append("\n"));
-        sb.append("\nПартнёры:\n");
-        boys.forEach(boy -> sb.append(boy).append("\n"));
+        sb.append("\n\uD83D\uDC83:\n");
+        girls.forEach(girl -> sb.append("\uD83D\uDD53").append(girl).append("\n"));
+
+        sb.append("\n\uD83D\uDD7A:\n");
+        boys.forEach(boy -> sb.append("\uD83D\uDD53").append(boy).append("\n"));
 
         return sb.toString();
     }

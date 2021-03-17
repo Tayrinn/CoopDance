@@ -119,7 +119,8 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         List<InlineQueryResult> results = new ArrayList<>();
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();
-        messageContent.setMessageText("Коллективка " + inlineQuery.getQuery());
+        messageContent.setMessageText(inlineQuery.getQuery());
+        dances.addDance(inlineQuery.getQuery(), inlineQuery.getId());
         article.setInputMessageContent(messageContent);
         article.setId("111");
         article.setTitle("Нажмите для создания голосовалки");
@@ -145,11 +146,11 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         boy.setCallbackData(Commands.ADD_BOY);
 
         InlineKeyboardButton girlAndBoy = new InlineKeyboardButton();
-        girlAndBoy.setText("\uD83D\uDC83 и \uD83D\uDD7A");
+        girlAndBoy.setText("\uD83D\uDC83 + \uD83D\uDD7A");
         girlAndBoy.setCallbackData(Commands.ADD_GIRL_AND_BOY);
 
         InlineKeyboardButton boyAndGirl = new InlineKeyboardButton();
-        boyAndGirl.setText("\uD83D\uDD7A и \uD83D\uDC83");
+        boyAndGirl.setText("\uD83D\uDD7A + \uD83D\uDC83");
         boyAndGirl.setCallbackData(Commands.ADD_BOY_AND_GIRL);
 
         InlineKeyboardButton cancel = new InlineKeyboardButton();

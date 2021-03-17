@@ -11,7 +11,7 @@ public class Dancer {
 
     @Override
     public String toString() {
-        return user.getLastName() + " " + user.getFirstName();
+        return "<a href=@" + user.getUserName()+ "\">" + user.getLastName() + " " + user.getFirstName() + "</a>";
     }
 
     @interface Sex {
