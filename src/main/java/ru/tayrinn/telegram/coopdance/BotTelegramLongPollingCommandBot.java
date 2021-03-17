@@ -89,7 +89,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         switch (command) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(command + "," + messageId, callbackQuery); break;
+                sendInlineAnswer(command + "-" + messageId, callbackQuery); break;
         }
 
         EditMessageText newMessage = new EditMessageText();
