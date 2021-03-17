@@ -3,6 +3,7 @@ package ru.tayrinn.telegram.coopdance;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -29,11 +30,13 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     private final String BOT_TOKEN;
     private final String DATABASE_URL;
     private final Dances dances = new Dances();
+    private final BotCommandsController botCommandsController;
 
     public BotTelegramLongPollingCommandBot(String botName, String botToken, String database_url) {
         BOT_NAME = botName;
         BOT_TOKEN = botToken;
         DATABASE_URL = database_url;
+        botCommandsController = new BotCommandsController(new TelegramCommandsExecotorImpl());
     }
 
     @Override
@@ -52,13 +55,14 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     }
 
     public void processNonCommandUpdate(Update update) {
-        if (update.hasInlineQuery()) {
-            handleInlineQuery(update.getInlineQuery());
-        } else if (update.hasCallbackQuery()) {
-            handleCallbackQuery(update.getCallbackQuery());
-        } else if (update.hasMessage()) {
-            handleMessage(update.getMessage());
-        }
+        botCommandsController.handle(update);
+//        if (update.hasInlineQuery()) {
+//            handleInlineQuery(update.getInlineQuery());
+//        } else if (update.hasCallbackQuery()) {
+//            handleCallbackQuery(update.getCallbackQuery());
+//        } else if (update.hasMessage()) {
+//            handleMessage(update.getMessage());
+//        }
     }
 
     /**
@@ -210,5 +214,17 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return BOT_TOKEN;
+    }
+
+    private class TelegramCommandsExecotorImpl extends TelegramCommandsExecutor {
+
+        @Override
+        public void send(BotApiMethod method) {
+            try {
+                execute(method);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
