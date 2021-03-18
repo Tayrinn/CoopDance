@@ -2,6 +2,7 @@ package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -17,7 +18,8 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         BOT_NAME = botName;
         BOT_TOKEN = botToken;
         DATABASE_URL = database_url;
-        botCommandsController = new BotCommandsController(new TelegramCommandsExecutorImpl());
+        DbConfig config = new DbConfig();
+        botCommandsController = new BotCommandsController(new TelegramCommandsExecutorImpl(), config.dataSource());
     }
 
     @Override
@@ -44,7 +46,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         return BOT_TOKEN;
     }
 
-    private class TelegramCommandsExecutorImpl extends TelegramCommandsExecutor {
+    private class TelegramCommandsExecutorImpl implements TelegramCommandsExecutor {
 
         @Override
         public void send(BotApiMethod method) {
@@ -53,6 +55,14 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        public void sendChatMessage(String chatId, String text) {
+            SendMessage message = new SendMessage();
+            message.setText(text);
+            message.setChatId(chatId);
+            send(message);
         }
     }
 }
