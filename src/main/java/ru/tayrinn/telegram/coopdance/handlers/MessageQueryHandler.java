@@ -72,19 +72,19 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
             });
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "Размер ответа = " + oldMessages.size());
         } catch (Exception throwables) {
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString() + " " + throwables.getMessage() +
-                    " chatDao = " + chatDao);
+            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString());
         }
     }
 
     private void parseStartCommandAnswer(ChatMessage chatMessage, Message origMessage) {
-        String extractedInfo = chatMessage.getText().substring(7);
+        String extractedInfo = chatMessage.getText().substring(7); // "/start text"
         String command = extractedInfo.split("-")[0];
         String messageId = extractedInfo.split("-")[1];
+        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), extractedInfo);
 
         Dance dance = dances.getDanceByMessageId(chatMessage.getMessageId());
         Dancer partner = new Dancer();
-        partner.stubName = origMessage.getText().substring(6);
+        partner.stubName = origMessage.getText().substring(6); // "/user name"
 
         Dancer authorDancer = new Dancer();
         authorDancer.user = origMessage.getFrom();
@@ -94,12 +94,14 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
                 partner.sex = Dancer.Sex.BOY;
                 authorDancer.sex = Dancer.Sex.GIRL;
                 dance.addPair(partner, authorDancer);
+                telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "ADD_GIRL_AND_BOY");
                 break;
             }
             case Commands.ADD_BOY_AND_GIRL: {
                 partner.sex = Dancer.Sex.GIRL;
                 authorDancer.sex = Dancer.Sex.BOY;
                 dance.addPair(authorDancer, partner);
+                telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "ADD_BOY_AND_GIRL");
                 break;
             }
         }
