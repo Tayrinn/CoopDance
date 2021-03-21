@@ -29,6 +29,7 @@ public class ChatDaoImpl implements ChatDao {
 
     public ChatDaoImpl(DataSource dataSource) throws SQLException {
         stmt = dataSource.getConnection().createStatement();
+        stmt.execute(DROP);
         stmt.execute(CREATE);
     }
 

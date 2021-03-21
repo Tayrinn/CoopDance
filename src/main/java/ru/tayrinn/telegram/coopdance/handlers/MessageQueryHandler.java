@@ -7,7 +7,6 @@ import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
 import ru.tayrinn.telegram.coopdance.models.ChatDao;
 import ru.tayrinn.telegram.coopdance.models.ChatMessage;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class MessageQueryHandler extends BotCommandsHandler<Message> {
@@ -39,7 +38,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
         try {
             chatDao.writeChatMessage(chatMessage);
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.getMessage());
         }
     }
