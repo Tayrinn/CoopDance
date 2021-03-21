@@ -4,11 +4,15 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
+import ru.tayrinn.telegram.coopdance.models.ChatDao;
 
 public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
-    public MessageQueryHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory) {
+    private final ChatDao chatDao;
+
+    public MessageQueryHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, ChatDao chatDao) {
         super(telegramCommandsExecutor, keyboardFactory);
+        this.chatDao = chatDao;
     }
 
     public void handle(Message data) {

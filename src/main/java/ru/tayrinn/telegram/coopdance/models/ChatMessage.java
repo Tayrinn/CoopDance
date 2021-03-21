@@ -42,12 +42,12 @@ public class ChatMessage {
         this.authorUsername = authorUsername;
     }
 
-    public boolean isBot() {
-        return isBot;
+    public int isBot() {
+        return isBot ? 1 : 0;
     }
 
-    public void setBot(boolean bot) {
-        isBot = bot;
+    public void setBot(int bot) {
+        isBot = bot == 1;
     }
 
     public String getPayload() {

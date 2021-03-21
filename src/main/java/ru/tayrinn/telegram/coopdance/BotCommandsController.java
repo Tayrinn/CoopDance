@@ -21,14 +21,14 @@ public class BotCommandsController {
 
     public BotCommandsController(TelegramCommandsExecutor telegramCommandsExecutor,
                                  DataSource dataSource) {
-        messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory);
-        callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
-        inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
         try {
             chatDao = new ChatDaoImpl(dataSource);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory, chatDao);
+        callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
+        inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
     }
 
     public void handle(Update update) {

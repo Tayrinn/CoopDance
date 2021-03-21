@@ -4,19 +4,21 @@ import ru.tayrinn.telegram.coopdance.models.ChatDao;
 import ru.tayrinn.telegram.coopdance.models.ChatMessage;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ChatDaoImpl implements ChatDao {
     private static final String SELECT_LAST_CHAT_MESSAGES_QUERY = "SELECT top ? * FROM CHAT_MESSAGES WHERE CHAT_ID = ?";
-    private static final String CREATE = "CREATE TABLE IF NOT EXISTS CHAT_MESSAGES (" +
-            "id INT AUTO_INCREMENT PRIMARY KEY," +
+    private static final String DROP = "DROP TABLE IF EXISTS CHAT_MESSAGES";
+    private static final String CREATE = "" +
+            "CREATE TABLE CHAT_MESSAGES (" +
+            "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
+            ChatMessage.KEY_CHAT_ID + " TEXT," +
             ChatMessage.KEY_TEXT + " TEXT," +
             ChatMessage.KEY_MESSAGE_ID + " TEXT," +
-            ChatMessage.KEY_CHAT_ID + " TEXT," +
             ChatMessage.KEY_AUTHOR_USERNAME + " TEXT," +
             ChatMessage.KEY_IS_BOT + " INT," +
             ChatMessage.KEY_PAYLOAD + " TEXT," +
@@ -31,23 +33,38 @@ public class ChatDaoImpl implements ChatDao {
     }
 
     @Override
-    public void writeChatMessage(ChatMessage chatMessage) {
-        //simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("CHAT_MESSAGES");
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(ChatMessage.KEY_TEXT, chatMessage.getText());
-        parameters.put(ChatMessage.KEY_MESSAGE_ID, chatMessage.getMessageId());
-        parameters.put(ChatMessage.KEY_CHAT_ID, chatMessage.getChatId());
-        parameters.put(ChatMessage.KEY_AUTHOR_USERNAME, chatMessage.getAuthorUsername());
-        parameters.put(ChatMessage.KEY_IS_BOT, chatMessage.isBot());
-        parameters.put(ChatMessage.KEY_PAYLOAD, chatMessage.getPayload());
-        parameters.put(ChatMessage.KEY_TIMESTAMP, chatMessage.getTimestamp());
-        //simpleJdbcInsert.execute(parameters);
+    public void writeChatMessage(ChatMessage chatMessage) throws SQLException {
+        stmt.execute("INSERT INTO CHAT_MESSAGES VALUES(" +
+                chatMessage.getChatId() + ", " +
+                chatMessage.getText() + ", " +
+                chatMessage.getMessageId() + ", " +
+                chatMessage.getAuthorUsername() + ", " +
+                chatMessage.isBot()  + ", " +
+                chatMessage.getPayload() + ", " +
+                "now()" +
+                ")");
     }
 
     @Override
-    public List<ChatMessage> getLastChatMessages(String chatId, Integer count) {
+    public List<ChatMessage> getLastChatMessages(String chatId, String authorName, Integer count) throws SQLException {
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM CHAT_MESSAGES WHERE" +
+                ChatMessage.KEY_CHAT_ID + " = " + chatId +
+                "AND " + ChatMessage.KEY_AUTHOR_USERNAME + " = " + authorName);
+        List<ChatMessage> result = new ArrayList<>(resultSet.getFetchSize());
+        while (resultSet.next()) {
+            ChatMessage msg = new ChatMessage();
+            msg.setChatId(chatId);
+            msg.setAuthorUsername(authorName);
+            msg.setText(resultSet.getString(ChatMessage.KEY_TEXT));
+            msg.setMessageId(resultSet.getString(ChatMessage.KEY_MESSAGE_ID));
+            msg.setBot(resultSet.getInt(ChatMessage.KEY_IS_BOT));
+            msg.setPayload(resultSet.getString(ChatMessage.KEY_PAYLOAD));
+            result.add(msg);
+        }
 
-        return null;//jdbcTemplate.query(SELECT_LAST_CHAT_MESSAGES_QUERY, new Object[]{count, chatId}, new ChatMessageRowMapper());
+        resultSet.close();
+
+        return result;
     }
 
     @Override
