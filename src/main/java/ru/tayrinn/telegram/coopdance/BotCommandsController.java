@@ -1,5 +1,7 @@
 package ru.tayrinn.telegram.coopdance;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.tayrinn.telegram.coopdance.handlers.CallbackQueryHandler;
 import ru.tayrinn.telegram.coopdance.handlers.InlineQueryHandler;
@@ -25,7 +27,9 @@ public class BotCommandsController {
         messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory);
         callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
         inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
-        chatDao = new ChatDaoImpl(dataSource);
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("jdbc-config.xml");
+        chatDao = context.getBean("jdbcTemplateChatDao", ChatDaoImpl.class);
     }
 
     public void handle(Update update) {

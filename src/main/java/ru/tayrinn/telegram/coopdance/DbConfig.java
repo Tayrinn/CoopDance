@@ -6,24 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Statement;
 
 @Configuration
 public class DbConfig {
-
-    private Statement db;
-//
-//    public void createDbConnection() {
-//        try {
-//            db = dataSource().getConnection().createStatement();
-//            createTables();
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//    }
-//
-//    private void createTables() {
-//    }
 
     @Bean
     public BasicDataSource dataSource() {

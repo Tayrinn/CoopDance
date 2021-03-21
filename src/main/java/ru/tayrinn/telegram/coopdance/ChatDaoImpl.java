@@ -18,11 +18,6 @@ public class ChatDaoImpl implements ChatDao {
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
 
-    public ChatDaoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
     @Override
     public void writeChatMessage(ChatMessage chatMessage) {
         simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("CHAT_MESSAGES");
@@ -46,5 +41,10 @@ public class ChatDaoImpl implements ChatDao {
     @Override
     public void updateChatMessage(ChatMessage chatMessage) {
 
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 }
