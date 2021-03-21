@@ -22,4 +22,8 @@ public class Commands {
         return gson.fromJson(value, CallbackData.class);
     }
 
+    public static String toJson(Object data) {
+        return gson.toJson(data);
+    }
+
 }

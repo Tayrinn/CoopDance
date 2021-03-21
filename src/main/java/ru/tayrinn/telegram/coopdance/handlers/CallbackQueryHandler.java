@@ -1,12 +1,12 @@
 package ru.tayrinn.telegram.coopdance.handlers;
 
-import com.google.gson.Gson;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
+import ru.tayrinn.telegram.coopdance.Utils;
 import ru.tayrinn.telegram.coopdance.models.CallbackData;
 import ru.tayrinn.telegram.coopdance.models.Commands;
 import ru.tayrinn.telegram.coopdance.models.Dance;
@@ -42,7 +42,7 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
         switch (callbackData.command) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(new Gson().toJson(callbackData), callbackQuery); break;
+                sendInlineAnswer(Utils.convertToUtf8String(Commands.toJson(callbackData)), callbackQuery); break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
                 addSingleDancer();
