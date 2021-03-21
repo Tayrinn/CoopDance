@@ -1,5 +1,6 @@
 package ru.tayrinn.telegram.coopdance.handlers;
 
+import com.google.gson.Gson;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -37,10 +38,11 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
     }
 
     private void parseCommand() {
+
         switch (callbackData.command) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(callbackData.command + "," + messageId + "," + callbackQuery.getChatInstance(), callbackQuery); break;
+                sendInlineAnswer(new Gson().toJson(callbackData), callbackQuery); break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
                 addSingleDancer();
