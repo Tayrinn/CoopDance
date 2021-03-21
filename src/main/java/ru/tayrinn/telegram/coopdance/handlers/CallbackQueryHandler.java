@@ -42,7 +42,9 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
         switch (callbackData.command) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(Utils.convertToUtf8String(Commands.toJson(callbackData)), callbackQuery); break;
+                String utf = Utils.convertToUtf8String(Commands.toJson(callbackData));
+                telegramCommandsExecutor.sendChatMessage(callbackQuery.getChatInstance(), utf);
+                sendInlineAnswer(utf, callbackQuery); break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
                 addSingleDancer();
