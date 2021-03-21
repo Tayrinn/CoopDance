@@ -25,9 +25,15 @@ public class ChatDaoImpl implements ChatDao {
             ChatMessage.KEY_TIMESTAMP + " TIMESTAMP" +
             ")";
 
-    private final Statement stmt;
+    private Statement stmt;
+    private final DataSource dataSource;
 
     public ChatDaoImpl(DataSource dataSource) throws SQLException {
+        this.dataSource = dataSource;
+    }
+
+    @Override
+    public void create() throws SQLException {
         stmt = dataSource.getConnection().createStatement();
         stmt.execute(DROP);
         stmt.execute(CREATE);

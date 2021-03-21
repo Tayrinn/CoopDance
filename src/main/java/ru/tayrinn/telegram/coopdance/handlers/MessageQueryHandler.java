@@ -37,6 +37,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         chatMessage.setBot(0);
 
         try {
+            chatDao.create();
             chatDao.writeChatMessage(chatMessage);
         } catch (Exception throwables) {
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.getMessage());
