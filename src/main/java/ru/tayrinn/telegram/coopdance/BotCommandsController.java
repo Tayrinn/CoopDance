@@ -24,7 +24,7 @@ public class BotCommandsController {
         try {
             chatDao = new ChatDaoImpl(dataSource);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            //telegramCommandsExecutor.sendChatMessage();
         }
         messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory, chatDao);
         callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
