@@ -5,10 +5,10 @@ import java.util.List;
 
 public interface ChatDao {
 
-    public void writeChatMessage(ChatMessage chatMessage) throws SQLException;
+    void writeChatMessage(ChatMessage chatMessage) throws SQLException;
 
-    public List<ChatMessage> getLastChatMessages(String chatId, String authorName, Integer count) throws SQLException;
+    List<ChatMessage> getLastChatMessages(String chatId, String authorName, Integer count) throws SQLException;
 
-    public void updateChatMessage(ChatMessage chatMessage);
+    void updateChatMessage(ChatMessage chatMessage);
 
 }
