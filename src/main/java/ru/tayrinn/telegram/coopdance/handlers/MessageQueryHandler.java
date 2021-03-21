@@ -60,6 +60,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
             oldMessages.forEach(chatMessage -> {
                 telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), chatMessage.getText());
             });
+            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "Размер ответа = " + oldMessages.size());
         } catch (SQLException throwables) {
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString());
         }
