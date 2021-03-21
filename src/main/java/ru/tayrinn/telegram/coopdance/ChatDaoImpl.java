@@ -15,7 +15,6 @@ public class ChatDaoImpl implements ChatDao {
     private static final String DROP = "DROP TABLE IF EXISTS CHAT_MESSAGES";
     private static final String CREATE = "" +
             "CREATE TABLE CHAT_MESSAGES (" +
-            "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
             ChatMessage.KEY_CHAT_ID + " TEXT," +
             ChatMessage.KEY_TEXT + " TEXT," +
             ChatMessage.KEY_MESSAGE_ID + " TEXT," +
