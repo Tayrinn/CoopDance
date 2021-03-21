@@ -78,13 +78,13 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
     }
 
     private void parseStartCommandAnswer(ChatMessage chatMessage, Message origMessage) {
-        String extractedInfo = chatMessage.getText().substring(6);
+        String extractedInfo = chatMessage.getText().substring(7);
         String command = extractedInfo.split("-")[0];
         String messageId = extractedInfo.split("-")[1];
 
         Dance dance = dances.getDanceByMessageId(chatMessage.getMessageId());
         Dancer partner = new Dancer();
-        partner.stubName = origMessage.getText().substring(5);
+        partner.stubName = origMessage.getText().substring(6);
 
         Dancer authorDancer = new Dancer();
         authorDancer.user = origMessage.getFrom();
