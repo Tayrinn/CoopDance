@@ -12,11 +12,22 @@ import java.util.Map;
 
 public class ChatDaoImpl implements ChatDao {
     private static final String SELECT_LAST_CHAT_MESSAGES_QUERY = "SELECT top ? * FROM CHAT_MESSAGES WHERE CHAT_ID = ?";
+    private static final String CREATE = "CREATE TABLE IF NOT EXISTS CHAT_MESSAGES (" +
+            "id INT AUTO_INCREMENT PRIMARY KEY," +
+            ChatMessage.KEY_TEXT + " TEXT," +
+            ChatMessage.KEY_MESSAGE_ID + " TEXT," +
+            ChatMessage.KEY_CHAT_ID + " TEXT," +
+            ChatMessage.KEY_AUTHOR_USERNAME + " TEXT," +
+            ChatMessage.KEY_IS_BOT + " INT," +
+            ChatMessage.KEY_PAYLOAD + " TEXT," +
+            ChatMessage.KEY_TIMESTAMP + " TIMESTAMP" +
+            ")";
 
     private final Statement stmt;
 
     public ChatDaoImpl(DataSource dataSource) throws SQLException {
         stmt = dataSource.getConnection().createStatement();
+        stmt.execute(CREATE);
     }
 
     @Override
