@@ -27,7 +27,7 @@ public class Dance {
     }
 
     public void addPair(Dancer boy, Dancer girl) {
-        pairs.add(new DancePair(boy, girl));
+        pairs.add(new DancePair(girl, boy));
     }
 
     public void addGirl(User user) {
