@@ -56,7 +56,6 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         if (msg.getText().startsWith("/start")) {
             handleStartMessage(msg);
         } else if (msg.getText().startsWith("/user")) {
-            telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Parse user command " + msg.getText() + "!");
             parseUsernameCommand(msg);
         }
     }
@@ -66,9 +65,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
             List<ChatMessage> oldMessages = chatDao.getLastChatMessages(msg.getChatId().toString(), msg.getFrom().getUserName(), 1);
             oldMessages.forEach(chatMessage -> {
                 telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), chatMessage.toString());
-                if (chatMessage.getText().startsWith("/start")) {
-                    parseStartCommandAnswer(chatMessage, msg);
-                }
+                parseStartCommandAnswer(chatMessage, msg);
             });
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "Размер ответа = " + oldMessages.size());
         } catch (Exception throwables) {
