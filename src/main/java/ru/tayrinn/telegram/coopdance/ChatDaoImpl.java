@@ -46,7 +46,7 @@ public class ChatDaoImpl implements ChatDao {
                 ChatMessage.KEY_MESSAGE_ID + "," +
                 ChatMessage.KEY_AUTHOR_USERNAME + "," +
                 ChatMessage.KEY_IS_BOT + "," +
-                ChatMessage.KEY_PAYLOAD + "," +
+                ChatMessage.KEY_PAYLOAD + "" +
                 ")" +
                 " VALUES(" +
                 "'" + chatMessage.getChatId() + "', " +
