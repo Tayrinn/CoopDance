@@ -79,7 +79,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         String messageId = extractedInfo.split("-")[1];
 
         Dance dance = dances.getDanceByMessageId(chatMessage.getMessageId());
-        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), dance.toString());
+        dances.getDances().forEach(it -> telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), it.toString()));
 
         Dancer partner = new Dancer();
         partner.stubName = origMessage.getText().substring(6); // "/user name"
