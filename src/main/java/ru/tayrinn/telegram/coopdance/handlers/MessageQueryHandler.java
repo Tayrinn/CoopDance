@@ -50,6 +50,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         if (msg.getText().startsWith("/start")) {
             handleStartMessage(msg);
         } else if (msg.getText().startsWith("/user")){
+            telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Parse user command " + msg.getText() + "!");
             parseUsernameCommand(msg);
         }
     }
