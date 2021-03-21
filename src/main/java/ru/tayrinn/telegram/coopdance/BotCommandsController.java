@@ -1,7 +1,5 @@
 package ru.tayrinn.telegram.coopdance;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.tayrinn.telegram.coopdance.handlers.CallbackQueryHandler;
 import ru.tayrinn.telegram.coopdance.handlers.InlineQueryHandler;
@@ -10,26 +8,27 @@ import ru.tayrinn.telegram.coopdance.models.ChatDao;
 import ru.tayrinn.telegram.coopdance.models.Dances;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 public class BotCommandsController {
 
     private final InlineKeyboardFactory keyboardFactory = new InlineKeyboardFactory();
-    private final TelegramCommandsExecutor telegramCommandsExecutor;
     private final CallbackQueryHandler callbackQueryHandler;
     private final InlineQueryHandler inlineQueryHandler;
     private final MessageQueryHandler messageQueryHandler;
     private final Dances dances = new Dances();
-    private final ChatDao chatDao;
+    private ChatDao chatDao;
 
     public BotCommandsController(TelegramCommandsExecutor telegramCommandsExecutor,
                                  DataSource dataSource) {
-        this.telegramCommandsExecutor = telegramCommandsExecutor;
         messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory);
         callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
         inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext("jdbc-config.xml");
-        chatDao = context.getBean("jdbcTemplateChatDao", ChatDaoImpl.class);
+        try {
+            chatDao = new ChatDaoImpl(dataSource);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public void handle(Update update) {
