@@ -21,11 +21,11 @@ public class ChatDaoImpl implements ChatDao {
     public ChatDaoImpl(DataSource dataSource) {
         this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-        simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("CHAT_MESSAGES");
     }
 
     @Override
     public void writeChatMessage(ChatMessage chatMessage) {
+        simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("CHAT_MESSAGES");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ChatMessage.KEY_TEXT, chatMessage.getText());
         parameters.put(ChatMessage.KEY_MESSAGE_ID, chatMessage.getMessageId());

@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.tayrinn.telegram.coopdance.handlers.CallbackQueryHandler;
 import ru.tayrinn.telegram.coopdance.handlers.InlineQueryHandler;
 import ru.tayrinn.telegram.coopdance.handlers.MessageQueryHandler;
+import ru.tayrinn.telegram.coopdance.models.ChatDao;
 import ru.tayrinn.telegram.coopdance.models.Dances;
 
 import javax.sql.DataSource;
@@ -16,7 +17,7 @@ public class BotCommandsController {
     private final InlineQueryHandler inlineQueryHandler;
     private final MessageQueryHandler messageQueryHandler;
     private final Dances dances = new Dances();
-    //private final ChatDao chatDao;
+    private final ChatDao chatDao;
 
     public BotCommandsController(TelegramCommandsExecutor telegramCommandsExecutor,
                                  DataSource dataSource) {
@@ -24,7 +25,7 @@ public class BotCommandsController {
         messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory);
         callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
         inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
-        //chatDao = new ChatDaoImpl(dataSource);
+        chatDao = new ChatDaoImpl(dataSource);
     }
 
     public void handle(Update update) {
