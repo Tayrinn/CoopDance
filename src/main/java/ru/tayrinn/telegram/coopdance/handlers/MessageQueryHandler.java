@@ -74,7 +74,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
     }
 
     private void parseStartCommandAnswer(ChatMessage chatMessage, Message origMessage) {
-        String[] extractedInfo = chatMessage.getText().substring(7).split(":"); // "/start text"
+        String[] extractedInfo = chatMessage.getText().substring(7).split(","); // "/start text"
         String command = extractedInfo[0];
         String messageId = extractedInfo[1];
         String chatId = extractedInfo[2];

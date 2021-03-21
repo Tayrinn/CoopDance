@@ -40,7 +40,7 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
         switch (callbackData.command) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                sendInlineAnswer(callbackData.command + ":" + messageId + ":" + callbackQuery.getChatInstance(), callbackQuery); break;
+                sendInlineAnswer(callbackData.command + "," + messageId + "," + callbackQuery.getChatInstance(), callbackQuery); break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
                 addSingleDancer();
