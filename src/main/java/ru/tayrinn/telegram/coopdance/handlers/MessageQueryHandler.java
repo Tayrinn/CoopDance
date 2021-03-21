@@ -5,6 +5,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
 import ru.tayrinn.telegram.coopdance.models.ChatDao;
+import ru.tayrinn.telegram.coopdance.models.ChatMessage;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
@@ -24,6 +28,20 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         answer.setText("Это сообщение ответ на старт");
         answer.setChatId(msg.getChatId().toString());
         telegramCommandsExecutor.send(answer);
+
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setMessageId(msg.getMessageId().toString());
+        chatMessage.setChatId(msg.getChatId().toString());
+        chatMessage.setText(msg.getText());
+        chatMessage.setAuthorUsername(msg.getFrom().getUserName());
+        chatMessage.setPayload("ddd");
+        chatMessage.setBot(0);
+
+        try {
+            chatDao.writeChatMessage(chatMessage);
+        } catch (SQLException throwables) {
+            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString());
+        }
     }
 
     private void handleMessage(Message msg) {
@@ -31,7 +49,19 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Hello world, " + msg.getText() + "!");
         if (msg.getText().startsWith("/start")) {
             handleStartMessage(msg);
+        } else if (msg.getText().startsWith("/user")){
+            parseUsernameCommand(msg);
         }
     }
 
+    private void parseUsernameCommand(Message msg) {
+        try {
+            List<ChatMessage> oldMessages = chatDao.getLastChatMessages(msg.getChatId().toString(), msg.getFrom().getUserName(), 10);
+            oldMessages.forEach(chatMessage -> {
+                telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), chatMessage.getText());
+            });
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }
