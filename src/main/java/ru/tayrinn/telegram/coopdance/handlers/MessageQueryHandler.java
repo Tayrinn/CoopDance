@@ -1,21 +1,24 @@
 package ru.tayrinn.telegram.coopdance.handlers;
 
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
-import ru.tayrinn.telegram.coopdance.models.ChatDao;
-import ru.tayrinn.telegram.coopdance.models.ChatMessage;
+import ru.tayrinn.telegram.coopdance.models.*;
 
 import java.util.List;
 
 public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
     private final ChatDao chatDao;
+    private final Dances dances;
 
-    public MessageQueryHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, ChatDao chatDao) {
+    public MessageQueryHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, ChatDao chatDao, Dances dances) {
         super(telegramCommandsExecutor, keyboardFactory);
         this.chatDao = chatDao;
+        this.dances = dances;
     }
 
     public void handle(Message data) {
@@ -28,6 +31,10 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         answer.setChatId(msg.getChatId().toString());
         telegramCommandsExecutor.send(answer);
 
+        writeUserMessageToDb(msg);
+    }
+
+    private void writeUserMessageToDb(Message msg) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setMessageId(msg.getMessageId().toString());
         chatMessage.setChatId(msg.getChatId().toString());
@@ -37,7 +44,6 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         chatMessage.setBot(0);
 
         try {
-            chatDao.create();
             chatDao.writeChatMessage(chatMessage);
         } catch (Exception throwables) {
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.getMessage());
@@ -49,7 +55,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Hello world, " + msg.getText() + "!");
         if (msg.getText().startsWith("/start")) {
             handleStartMessage(msg);
-        } else if (msg.getText().startsWith("/user")){
+        } else if (msg.getText().startsWith("/user")) {
             telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Parse user command " + msg.getText() + "!");
             parseUsernameCommand(msg);
         }
@@ -57,14 +63,53 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
     private void parseUsernameCommand(Message msg) {
         try {
-            List<ChatMessage> oldMessages = chatDao.getLastChatMessages(msg.getChatId().toString(), msg.getFrom().getUserName(), 10);
+            List<ChatMessage> oldMessages = chatDao.getLastChatMessages(msg.getChatId().toString(), msg.getFrom().getUserName(), 1);
             oldMessages.forEach(chatMessage -> {
                 telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), chatMessage.toString());
+                if (chatMessage.getText().startsWith("/start")) {
+                    parseStartCommandAnswer(chatMessage, msg);
+                }
             });
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "Размер ответа = " + oldMessages.size());
         } catch (Exception throwables) {
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString() + " " + throwables.getMessage() +
-             " chatDao = " + chatDao);
+                    " chatDao = " + chatDao);
         }
+    }
+
+    private void parseStartCommandAnswer(ChatMessage chatMessage, Message origMessage) {
+        String extractedInfo = chatMessage.getText().substring(6);
+        String command = extractedInfo.split("-")[0];
+        String messageId = extractedInfo.split("-")[1];
+
+        Dance dance = dances.getDanceByMessageId(chatMessage.getMessageId());
+        Dancer partner = new Dancer();
+        partner.stubName = origMessage.getText().substring(5);
+
+        Dancer authorDancer = new Dancer();
+        authorDancer.user = origMessage.getFrom();
+
+        switch (command) {
+            case Commands.ADD_GIRL_AND_BOY: {
+                partner.sex = Dancer.Sex.BOY;
+                authorDancer.sex = Dancer.Sex.GIRL;
+                dance.addPair(partner, authorDancer);
+                break;
+            }
+            case Commands.ADD_BOY_AND_GIRL: {
+                partner.sex = Dancer.Sex.GIRL;
+                authorDancer.sex = Dancer.Sex.BOY;
+                dance.addPair(authorDancer, partner);
+                break;
+            }
+        }
+
+        EditMessageText newMessage = new EditMessageText();
+        newMessage.setInlineMessageId(messageId);
+        newMessage.setReplyMarkup(keyboardFactory.createStarterKeyboard(dance.message));
+        newMessage.setParseMode(ParseMode.HTML);
+        newMessage.setText(dance.toString());
+
+        telegramCommandsExecutor.send(newMessage);
     }
 }

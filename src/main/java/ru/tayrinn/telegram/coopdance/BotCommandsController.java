@@ -23,10 +23,11 @@ public class BotCommandsController {
                                  DataSource dataSource) {
         try {
             chatDao = new ChatDaoImpl(dataSource);
+            chatDao.create();
         } catch (SQLException throwables) {
             //telegramCommandsExecutor.sendChatMessage();
         }
-        messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory, chatDao);
+        messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory, chatDao, dances);
         callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
         inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
     }

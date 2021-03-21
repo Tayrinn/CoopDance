@@ -62,9 +62,9 @@ public class ChatDaoImpl implements ChatDao {
 
     @Override
     public List<ChatMessage> getLastChatMessages(String chatId, String authorName, Integer count) throws SQLException {
-        ResultSet resultSet = stmt.executeQuery("SELECT * FROM CHAT_MESSAGES");// WHERE" +
-//                ChatMessage.KEY_CHAT_ID + " = " + chatId +
-//                "AND " + ChatMessage.KEY_AUTHOR_USERNAME + " = " + authorName);
+        ResultSet resultSet = stmt.executeQuery("SELECT TOP " + count +" * FROM CHAT_MESSAGES WHERE" +
+                ChatMessage.KEY_CHAT_ID + " = " + chatId +
+                "AND " + ChatMessage.KEY_AUTHOR_USERNAME + " = " + authorName);
         List<ChatMessage> result = new ArrayList<>(resultSet.getFetchSize());
         while (resultSet.next()) {
             ChatMessage msg = new ChatMessage();
