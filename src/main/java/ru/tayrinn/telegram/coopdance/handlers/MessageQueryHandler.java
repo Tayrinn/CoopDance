@@ -40,7 +40,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         try {
             chatDao.writeChatMessage(chatMessage);
         } catch (SQLException throwables) {
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString());
+            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.getMessage());
         }
     }
 
@@ -59,11 +59,11 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         try {
             List<ChatMessage> oldMessages = chatDao.getLastChatMessages(msg.getChatId().toString(), msg.getFrom().getUserName(), 10);
             oldMessages.forEach(chatMessage -> {
-                telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), chatMessage.getText());
+                telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), chatMessage.toString());
             });
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "Размер ответа = " + oldMessages.size());
         } catch (Exception throwables) {
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.getMessage());
+            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString());
         }
     }
 }

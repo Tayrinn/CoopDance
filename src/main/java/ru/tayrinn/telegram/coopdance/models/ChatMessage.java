@@ -73,4 +73,17 @@ public class ChatMessage {
     public void setChatId(String chatId) {
         this.chatId = chatId;
     }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "text='" + text + '\'' +
+                ", messageId='" + messageId + '\'' +
+                ", chatId='" + chatId + '\'' +
+                ", authorUsername='" + authorUsername + '\'' +
+                ", isBot=" + isBot +
+                ", payload='" + payload + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
