@@ -15,12 +15,12 @@ public class ChatDaoImpl implements ChatDao {
     private static final String DROP = "DROP TABLE IF EXISTS CHAT_MESSAGES";
     private static final String CREATE = "" +
             "CREATE TABLE CHAT_MESSAGES (" +
-            ChatMessage.KEY_CHAT_ID + " TEXT," +
-            ChatMessage.KEY_TEXT + " TEXT," +
-            ChatMessage.KEY_MESSAGE_ID + " TEXT," +
-            ChatMessage.KEY_AUTHOR_USERNAME + " TEXT," +
+            ChatMessage.KEY_CHAT_ID + " varchar(255)," +
+            ChatMessage.KEY_TEXT + " varchar(255)," +
+            ChatMessage.KEY_MESSAGE_ID + " varchar(255)," +
+            ChatMessage.KEY_AUTHOR_USERNAME + " varchar(255)," +
             ChatMessage.KEY_IS_BOT + " INT," +
-            ChatMessage.KEY_PAYLOAD + " TEXT," +
+            ChatMessage.KEY_PAYLOAD + " varchar(255)," +
             ChatMessage.KEY_TIMESTAMP + " TIMESTAMP" +
             ")";
 
