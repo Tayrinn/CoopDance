@@ -67,7 +67,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(dance.message, messageId));
         newMessage.setParseMode(ParseMode.HTML);
-        newMessage.setText(dance.toString());
+        newMessage.setText(Commands.toJson(callbackData));
 
         telegramCommandsExecutor.send(newMessage);
     }

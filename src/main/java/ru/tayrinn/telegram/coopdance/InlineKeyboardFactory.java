@@ -2,6 +2,7 @@ package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.tayrinn.telegram.coopdance.models.CallbackData;
 import ru.tayrinn.telegram.coopdance.models.Commands;
 
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class InlineKeyboardFactory {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Создать коллективку");
+        CallbackData callbackData = new CallbackData();
+        callbackData.command = Commands.CREATE;
+        callbackData.message = message;
         button.setCallbackData(Commands.format(Commands.CREATE, message, null));
         List<InlineKeyboardButton> row = new ArrayList<>();
         row.add(button);
