@@ -64,10 +64,8 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         try {
             List<ChatMessage> oldMessages = chatDao.getLastChatMessages(msg.getChatId().toString(), msg.getFrom().getUserName(), 1);
             oldMessages.forEach(chatMessage -> {
-                telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), chatMessage.toString());
                 parseStartCommandAnswer(chatMessage, msg);
             });
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "Размер ответа = " + oldMessages.size());
         } catch (Exception throwables) {
             telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString());
         }
@@ -91,14 +89,12 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
                 partner.sex = Dancer.Sex.BOY;
                 authorDancer.sex = Dancer.Sex.GIRL;
                 dance.addPair(partner, authorDancer);
-                telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "ADD_GIRL_AND_BOY");
                 break;
             }
             case Commands.ADD_BOY_AND_GIRL: {
                 partner.sex = Dancer.Sex.GIRL;
                 authorDancer.sex = Dancer.Sex.BOY;
                 dance.addPair(authorDancer, partner);
-                telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "ADD_BOY_AND_GIRL");
                 break;
             }
         }
