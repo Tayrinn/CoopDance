@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
+import ru.tayrinn.telegram.coopdance.Utils;
 import ru.tayrinn.telegram.coopdance.models.CallbackData;
 import ru.tayrinn.telegram.coopdance.models.Commands;
 import ru.tayrinn.telegram.coopdance.models.Dance;
@@ -40,7 +41,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                String utf = Commands.toJson(callbackData);
+                String utf = Utils.convertToUtf8String(Commands.toJson(callbackData));
 //                EditMessageText newMessage = new EditMessageText();
 //                newMessage.setInlineMessageId(messageId);
 //                newMessage.setParseMode(ParseMode.HTML);
