@@ -17,7 +17,7 @@ public class Commands {
         callbackData.command = command;
         callbackData.message = message;
         if (messageId != null) {
-            callbackData.messageId = messageId;
+            callbackData.msgId = messageId;
         }
         return gson.toJson(callbackData);
     }

@@ -32,7 +32,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         String callData = data.getData();
         messageId = data.getInlineMessageId();
         callbackData = Commands.parseCommand(callData);
-
+        callbackData.msgId = messageId;
         parseCommand();
     }
 
@@ -50,7 +50,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
 //                newMessage.setParseMode(ParseMode.HTML);
 //                newMessage.setText(utf);
 //                telegramCommandsExecutor.send(newMessage);
-                sendInlineAnswer(utf, callbackQuery);
+                sendInlineAnswer(utf);
                 break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
@@ -72,7 +72,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         telegramCommandsExecutor.send(newMessage);
     }
 
-    private void sendInlineAnswer(String command, CallbackQuery callbackQuery) {
+    private void sendInlineAnswer(String command) {
         AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
         answerCallbackQuery.setCallbackQueryId(callbackQuery.getId());
         answerCallbackQuery.setUrl("t.me/CoopDanceBot?start=" + command);
