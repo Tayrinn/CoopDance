@@ -15,14 +15,14 @@ import ru.tayrinn.telegram.coopdance.models.Dances;
 /**
  * Класс для обработки коллбеков - событий при нажатии на кнопки бота
  */
-public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
+public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
 
     private final Dances dances;
     private CallbackData callbackData; // данные, которые зашиваются в кнопку при создании
     private CallbackQuery callbackQuery;
     private String messageId;
 
-    public CallbackQueryHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, Dances dances) {
+    public ButtonsClickHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, Dances dances) {
         super(telegramCommandsExecutor, keyboardFactory);
         this.dances = dances;
     }
@@ -43,8 +43,9 @@ public class CallbackQueryHandler extends BotCommandsHandler<CallbackQuery> {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
                 String utf = Utils.convertToUtf8String(Commands.toJson(callbackData));
-                telegramCommandsExecutor.sendChatMessage(callbackQuery.getChatInstance(), utf);
-                sendInlineAnswer(utf, callbackQuery); break;
+//                telegramCommandsExecutor.sendChatMessage(callbackQuery.getChatInstance(), utf);
+                sendInlineAnswer(utf, callbackQuery);
+                break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
                 addSingleDancer();

@@ -1,7 +1,7 @@
 package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.tayrinn.telegram.coopdance.handlers.CallbackQueryHandler;
+import ru.tayrinn.telegram.coopdance.handlers.ButtonsClickHandler;
 import ru.tayrinn.telegram.coopdance.handlers.InlineQueryHandler;
 import ru.tayrinn.telegram.coopdance.handlers.MessageQueryHandler;
 import ru.tayrinn.telegram.coopdance.models.ChatDao;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class BotCommandsController {
 
     private final InlineKeyboardFactory keyboardFactory = new InlineKeyboardFactory();
-    private final CallbackQueryHandler callbackQueryHandler;
+    private final ButtonsClickHandler buttonsClickHandler;
     private final InlineQueryHandler inlineQueryHandler;
     private final MessageQueryHandler messageQueryHandler;
     private final Dances dances = new Dances();
@@ -28,7 +28,7 @@ public class BotCommandsController {
             //telegramCommandsExecutor.sendChatMessage();
         }
         messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory, chatDao, dances);
-        callbackQueryHandler = new CallbackQueryHandler(telegramCommandsExecutor, keyboardFactory, dances);
+        buttonsClickHandler = new ButtonsClickHandler(telegramCommandsExecutor, keyboardFactory, dances);
         inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
     }
 
@@ -36,7 +36,7 @@ public class BotCommandsController {
         if (update.hasInlineQuery()) {
             inlineQueryHandler.handle(update.getInlineQuery());
         } else if (update.hasCallbackQuery()) {
-            callbackQueryHandler.handle(update.getCallbackQuery());
+            buttonsClickHandler.handle(update.getCallbackQuery());
         } else if (update.hasMessage()) {
             messageQueryHandler.handle(update.getMessage());
         }
