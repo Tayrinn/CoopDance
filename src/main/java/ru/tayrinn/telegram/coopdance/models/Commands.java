@@ -3,6 +3,7 @@ package ru.tayrinn.telegram.coopdance.models;
 import com.google.gson.Gson;
 
 public class Commands {
+    public static final String SEPARATOR = "---";
     public static final String ADD_GIRL = "1";
     public static final String ADD_BOY = "2";
     public static final String ADD_GIRL_AND_BOY = "3";

@@ -37,28 +37,24 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
     }
 
     private void parseCommand() {
+        Dance dance = dances.getDance(callbackData.m, messageId);
+
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                String utf = callbackData.c + "---" + callbackData.i;
-//                EditMessageText newMessage = new EditMessageText();
-//                newMessage.setInlineMessageId(messageId);
-//                newMessage.setParseMode(ParseMode.HTML);
-//                newMessage.setText(utf);
-//                telegramCommandsExecutor.send(newMessage);
+                String utf = callbackData.c + Commands.SEPARATOR + callbackData.i;
+                addDanceAndEditMessage(dance);
                 sendInlineAnswer(utf);
                 break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
-                addSingleDancer();
+                dance.processCommand(callbackData.c, callbackQuery.getFrom());
+                addDanceAndEditMessage(dance);
                 break;
         }
     }
 
-    private void addSingleDancer() {
-        Dance dance = dances.getDance(callbackData.m, messageId);
-        dance.processCommand(callbackData.c, callbackQuery.getFrom());
-
+    private void addDanceAndEditMessage(Dance dance) {
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(null, messageId));
