@@ -40,7 +40,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
-                String utf = callbackData.c + "%20" + callbackData.i;
+                String utf = callbackData.c + "---" + callbackData.i;
 //                EditMessageText newMessage = new EditMessageText();
 //                newMessage.setInlineMessageId(messageId);
 //                newMessage.setParseMode(ParseMode.HTML);
