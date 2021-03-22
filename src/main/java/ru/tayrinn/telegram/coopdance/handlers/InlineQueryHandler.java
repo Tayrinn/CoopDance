@@ -40,7 +40,7 @@ public class InlineQueryHandler extends BotCommandsHandler<InlineQuery> {
 
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
         answerInlineQuery.setInlineQueryId(inlineQuery.getId());
-        answerInlineQuery.setCacheTime(1000);
+        answerInlineQuery.setCacheTime(60);
         answerInlineQuery.setResults(results);
 
         return answerInlineQuery;

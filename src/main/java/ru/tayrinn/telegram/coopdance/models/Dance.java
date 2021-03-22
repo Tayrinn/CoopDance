@@ -65,14 +65,24 @@ public class Dance {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(message).append("\n\n");
-        sb.append("\uD83D\uDD7A+\uD83D\uDC83:\n");
-        pairs.forEach(pair -> sb.append(pair).append("\n"));
-
-        sb.append("\n\uD83D\uDC83:\n");
-        girls.forEach(girl -> sb.append("\uD83D\uDD53").append(girl).append("\n"));
-
-        sb.append("\n\uD83D\uDD7A:\n");
-        boys.forEach(boy -> sb.append("\uD83D\uDD53").append(boy).append("\n"));
+        if (!pairs.isEmpty()) {
+            sb.append("\uD83D\uDD7A+\uD83D\uDC83:\n");
+            for (int i = 0; i < pairs.size(); i++) {
+                sb.append(i + 1).append(". ").append(pairs.get(i)).append("\n");
+            }
+        }
+        if (!girls.isEmpty()) {
+            sb.append("\n\uD83D\uDC83:\n");
+            for (int i = 0; i < girls.size(); i++) {
+                sb.append(i + 1).append(". ").append("\uD83D\uDD53").append(girls.get(i)).append("\n");
+            }
+        }
+        if (!boys.isEmpty()) {
+            sb.append("\n\uD83D\uDD7A:\n");
+            for (int i = 0; i < boys.size(); i++) {
+                sb.append(i + 1).append(". ").append("\uD83D\uDD53").append(boys.get(i)).append("\n");
+            }
+        }
 
         return sb.toString();
     }
