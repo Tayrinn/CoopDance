@@ -56,12 +56,12 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
     }
 
     private void addSingleDancer() {
-        Dance dance = dances.addDance(callbackData.m, messageId);
+        Dance dance = dances.getDance(callbackData.m, messageId);
         dance.processCommand(callbackData.c, callbackQuery.getFrom());
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
-        newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(dance.message, messageId));
+        newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(null, messageId));
         newMessage.setParseMode(ParseMode.HTML);
         newMessage.setText(dance.toString());
 

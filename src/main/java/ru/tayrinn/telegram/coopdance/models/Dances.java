@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Dances {
     private List<Dance> danceList = new ArrayList<>();
 
-    public Dance addDance(String message, String messageId) {
+    public Dance getDance(String message, String messageId) {
         AtomicReference<Dance> result = new AtomicReference<>();
         danceList.forEach(dance -> {
             if (dance.messageId.equals(messageId)) {
@@ -24,7 +24,7 @@ public class Dances {
     }
 
     public Dance getDanceByMessageId(String messageId) {
-        return addDance("Коллективка", messageId);
+        return getDance("Коллективка", messageId);
     }
 
     public List<Dance> getDances() {

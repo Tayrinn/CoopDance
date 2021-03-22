@@ -35,12 +35,12 @@ public class InlineQueryHandler extends BotCommandsHandler<InlineQuery> {
         article.setId("111");
 
         article.setTitle("Нажмите для создания голосовалки");
-        article.setReplyMarkup(keyboardFactory.createDanceKeyboard(inlineQuery.getQuery(), ""));
+        article.setReplyMarkup(keyboardFactory.createDanceKeyboard(inlineQuery.getQuery(), null));
         results.add(article);
 
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
         answerInlineQuery.setInlineQueryId(inlineQuery.getId());
-        answerInlineQuery.setCacheTime(10000);
+        answerInlineQuery.setCacheTime(1000);
         answerInlineQuery.setResults(results);
 
         return answerInlineQuery;
