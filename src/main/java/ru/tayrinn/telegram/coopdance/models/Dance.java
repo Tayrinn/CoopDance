@@ -72,15 +72,15 @@ public class Dance {
             }
         }
         if (!girls.isEmpty()) {
-            sb.append("\n\uD83D\uDC83:\n");
+            sb.append("\n\uD83D\uDD53 \uD83D\uDC83:\n");
             for (int i = 0; i < girls.size(); i++) {
-                sb.append(i + 1).append(". ").append("\uD83D\uDD53").append(girls.get(i)).append("\n");
+                sb.append(i + 1).append(". ").append(girls.get(i)).append("\n");
             }
         }
         if (!boys.isEmpty()) {
-            sb.append("\n\uD83D\uDD7A:\n");
+            sb.append("\n\uD83D\uDD53 \uD83D\uDD7A:\n");
             for (int i = 0; i < boys.size(); i++) {
-                sb.append(i + 1).append(". ").append("\uD83D\uDD53").append(boys.get(i)).append("\n");
+                sb.append(i + 1).append(". ").append(boys.get(i)).append("\n");
             }
         }
 
