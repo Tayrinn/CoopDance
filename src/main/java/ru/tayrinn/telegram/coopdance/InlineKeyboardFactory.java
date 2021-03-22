@@ -9,7 +9,7 @@ import java.util.List;
 
 public class InlineKeyboardFactory {
 
-    public InlineKeyboardMarkup createStarterKeyboard(String message, String messageId) {
+    public InlineKeyboardMarkup createDanceKeyboard(String message, String messageId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton girl = new InlineKeyboardButton();
         girl.setText("\uD83D\uDC83");
@@ -40,6 +40,21 @@ public class InlineKeyboardFactory {
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup createStarterKeyboard(String message) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("Создать коллективку");
+        button.setCallbackData(Commands.format(Commands.CREATE, message, null));
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        row.add(button);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(row);
         inlineKeyboardMarkup.setKeyboard(rowList);
 
         return inlineKeyboardMarkup;

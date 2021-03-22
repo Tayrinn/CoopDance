@@ -3,6 +3,7 @@ package ru.tayrinn.telegram.coopdance.models;
 import com.google.gson.Gson;
 
 public class Commands {
+    public static final String CREATE = "create";
     public static final String ADD_GIRL = "add_girl";
     public static final String ADD_BOY = "add_boy";
     public static final String ADD_GIRL_AND_BOY = "add_girl_and_boy";
@@ -15,7 +16,9 @@ public class Commands {
         CallbackData callbackData = new CallbackData();
         callbackData.command = command;
         callbackData.message = message;
-        callbackData.messageId = messageId;
+        if (messageId != null) {
+            callbackData.messageId = messageId;
+        }
         return gson.toJson(callbackData);
     }
 

@@ -107,7 +107,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
-        newMessage.setReplyMarkup(keyboardFactory.createStarterKeyboard(dance.message, messageId));
+        newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(dance.message, messageId));
         newMessage.setParseMode(ParseMode.HTML);
         newMessage.setText(dance.toString());
 
