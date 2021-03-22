@@ -27,7 +27,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
     private void handleStartMessage(Message msg) {
         SendMessage answer = new SendMessage();
-        answer.setText("Введите имя своего партнера, команда должна начинаться с /user");
+        answer.setText("Введите имя своего партнера, команда должна начинаться с /partner");
         answer.setChatId(msg.getChatId().toString());
         telegramCommandsExecutor.send(answer);
 
@@ -55,7 +55,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Hello world, " + msg.getText() + "!");
         if (msg.getText().startsWith("/start")) {
             handleStartMessage(msg);
-        } else if (msg.getText().startsWith("/user")) {
+        } else if (msg.getText().startsWith("/partner")) {
             parseUsernameCommand(msg);
         }
     }
