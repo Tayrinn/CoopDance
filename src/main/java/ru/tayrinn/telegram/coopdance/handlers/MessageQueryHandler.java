@@ -77,7 +77,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
     private void parseStartCommandAnswer(ChatMessage chatMessage, Message origMessage) {
         CallbackData extractedInfo = Commands.parseCommand(Utils.decodeUtf8(chatMessage.getText().substring(7))); // "/start text"
         String command = extractedInfo.command;
-        String messageId = extractedInfo.messageId;
+        String messageId = extractedInfo.message;
 
         Dance dance = dances.getDanceByMessageId(messageId);
 

@@ -9,27 +9,27 @@ import java.util.List;
 
 public class InlineKeyboardFactory {
 
-    public InlineKeyboardMarkup createStarterKeyboard(String systemInfo) {
+    public InlineKeyboardMarkup createStarterKeyboard(String message) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton girl = new InlineKeyboardButton();
         girl.setText("\uD83D\uDC83");
-        girl.setCallbackData(Commands.format(Commands.ADD_GIRL, systemInfo));
+        girl.setCallbackData(Commands.format(Commands.ADD_GIRL, message));
 
         InlineKeyboardButton boy = new InlineKeyboardButton();
         boy.setText("\uD83D\uDD7A");
-        boy.setCallbackData(Commands.format(Commands.ADD_BOY, systemInfo));
+        boy.setCallbackData(Commands.format(Commands.ADD_BOY, message));
 
         InlineKeyboardButton girlAndBoy = new InlineKeyboardButton();
         girlAndBoy.setText("\uD83D\uDC83 + \uD83D\uDD7A");
-        girlAndBoy.setCallbackData(Commands.format(Commands.ADD_GIRL_AND_BOY, systemInfo));
+        girlAndBoy.setCallbackData(Commands.format(Commands.ADD_GIRL_AND_BOY, message));
 
         InlineKeyboardButton boyAndGirl = new InlineKeyboardButton();
         boyAndGirl.setText("\uD83D\uDD7A + \uD83D\uDC83");
-        boyAndGirl.setCallbackData(Commands.format(Commands.ADD_BOY_AND_GIRL, systemInfo));
+        boyAndGirl.setCallbackData(Commands.format(Commands.ADD_BOY_AND_GIRL, message));
 
         InlineKeyboardButton cancel = new InlineKeyboardButton();
         cancel.setText("\u274C");
-        cancel.setCallbackData(Commands.format(Commands.CANCEL, systemInfo));
+        cancel.setCallbackData(Commands.format(Commands.CANCEL, message));
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(girl);

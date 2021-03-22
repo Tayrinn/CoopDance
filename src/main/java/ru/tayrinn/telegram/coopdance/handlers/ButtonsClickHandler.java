@@ -57,7 +57,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
     }
 
     private void addSingleDancer() {
-        Dance dance = dances.addDance(callbackData.command, messageId);
+        Dance dance = dances.addDance(callbackData.message, messageId);
         dance.processCommand(callbackData.command, callbackQuery.getFrom());
 
         EditMessageText newMessage = new EditMessageText();
