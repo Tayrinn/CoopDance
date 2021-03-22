@@ -43,7 +43,11 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
                 String utf = Utils.convertToUtf8String(Commands.toJson(callbackData));
-//                telegramCommandsExecutor.sendChatMessage(callbackQuery.getChatInstance(), utf);
+                EditMessageText newMessage = new EditMessageText();
+                newMessage.setInlineMessageId(messageId);
+                newMessage.setParseMode(ParseMode.HTML);
+                newMessage.setText(utf);
+                telegramCommandsExecutor.send(newMessage);
                 sendInlineAnswer(utf, callbackQuery);
                 break;
             case Commands.ADD_GIRL :
