@@ -32,16 +32,12 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         String callData = data.getData();
         messageId = data.getInlineMessageId();
         callbackData = Commands.parseCommand(callData);
-        callbackData.msgId = messageId;
+        callbackData.i = messageId;
         parseCommand();
     }
 
     private void parseCommand() {
-
-        switch (callbackData.command) {
-            case Commands.CREATE:
-                addSingleDancer();
-                break;
+        switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
                 String utf = Commands.toJson(callbackData);
@@ -60,8 +56,8 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
     }
 
     private void addSingleDancer() {
-        Dance dance = dances.addDance(callbackData.message, messageId);
-        dance.processCommand(callbackData.command, callbackQuery.getFrom());
+        Dance dance = dances.addDance(callbackData.m, messageId);
+        dance.processCommand(callbackData.c, callbackQuery.getFrom());
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
