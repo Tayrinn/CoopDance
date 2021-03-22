@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
-import ru.tayrinn.telegram.coopdance.Utils;
 import ru.tayrinn.telegram.coopdance.models.*;
 
 import java.util.List;
@@ -75,9 +74,9 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
     }
 
     private void parseStartCommandAnswer(ChatMessage chatMessage, Message origMessage) {
-        CallbackData extractedInfo = Commands.parseCommand(Utils.decodeUtf8(chatMessage.getText().substring(7))); // "/start text"
-        String command = extractedInfo.c;
-        String messageId = extractedInfo.m;
+        String[] extractedInfo = chatMessage.getText().substring(7).split("-"); // "/start text"
+        String command = extractedInfo[0];
+        String messageId = extractedInfo[1];
 
         Dance dance = dances.getDanceByMessageId(messageId);
 
