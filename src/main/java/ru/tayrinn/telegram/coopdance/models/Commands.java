@@ -11,10 +11,11 @@ public class Commands {
     private static Gson gson = new Gson();
 
 
-    public static String format(String command, String message) {
+    public static String format(String command, String message, String messageId) {
         CallbackData callbackData = new CallbackData();
         callbackData.command = command;
         callbackData.message = message;
+        callbackData.messageId = messageId;
         return gson.toJson(callbackData);
     }
 

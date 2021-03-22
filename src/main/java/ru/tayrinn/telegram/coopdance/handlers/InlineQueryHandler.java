@@ -35,7 +35,7 @@ public class InlineQueryHandler extends BotCommandsHandler<InlineQuery> {
         article.setId("111");
 
         article.setTitle("Нажмите для создания голосовалки");
-        article.setReplyMarkup(keyboardFactory.createStarterKeyboard(inlineQuery.getQuery()));
+        article.setReplyMarkup(keyboardFactory.createStarterKeyboard(inlineQuery.getQuery(), null));
         results.add(article);
 
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
