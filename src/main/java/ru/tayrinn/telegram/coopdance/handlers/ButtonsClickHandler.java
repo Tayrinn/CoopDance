@@ -65,7 +65,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
-        newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(dance.message, messageId));
+        //newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(dance.message, messageId));
         newMessage.setParseMode(ParseMode.HTML);
         newMessage.setText(Commands.toJson(callbackData));
 
