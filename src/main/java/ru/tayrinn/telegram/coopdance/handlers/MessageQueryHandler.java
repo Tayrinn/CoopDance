@@ -8,6 +8,9 @@ import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
 import ru.tayrinn.telegram.coopdance.models.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 
 public class MessageQueryHandler extends BotCommandsHandler<Message> {
@@ -67,7 +70,10 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
                 parseStartCommandAnswer(chatMessage, msg);
             });
         } catch (Exception throwables) {
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "exc=" + throwables.getMessage());
+            Writer buffer = new StringWriter();
+            PrintWriter pw = new PrintWriter(buffer);
+            throwables.printStackTrace(pw);
+            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "exc=" + buffer.toString());
         }
     }
 
