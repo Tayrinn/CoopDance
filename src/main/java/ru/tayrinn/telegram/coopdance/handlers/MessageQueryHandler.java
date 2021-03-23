@@ -93,7 +93,6 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
         Dancer authorDancer = new Dancer();
         authorDancer.user = origMessage.getFrom();
-        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), dance.toString());
         switch (command) {
             case Commands.ADD_GIRL_AND_BOY: {
                 partner.sex = Dancer.Sex.BOY;
