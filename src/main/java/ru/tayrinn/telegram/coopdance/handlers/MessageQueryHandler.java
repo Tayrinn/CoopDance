@@ -102,7 +102,6 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
                 break;
             }
         }
-        dances.getDances().forEach(it -> telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), it.toString()));
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
