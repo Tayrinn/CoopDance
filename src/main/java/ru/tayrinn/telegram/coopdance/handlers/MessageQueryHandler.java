@@ -67,7 +67,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
                 parseStartCommandAnswer(chatMessage, msg);
             });
         } catch (Exception throwables) {
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.toString());
+            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "exc=" + throwables.getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
         Dancer authorDancer = new Dancer();
         authorDancer.user = origMessage.getFrom();
-
+        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), dance.toString());
         switch (command) {
             case Commands.ADD_GIRL_AND_BOY: {
                 partner.sex = Dancer.Sex.BOY;
@@ -103,7 +103,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
             }
         }
 
-        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), dance.toString());
+
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
