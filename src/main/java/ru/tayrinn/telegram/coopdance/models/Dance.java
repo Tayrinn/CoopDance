@@ -64,7 +64,7 @@ public class Dance {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(message).append("\n\n");
+        StringBuilder sb = new StringBuilder(message + "").append("\n\n");
         if (!pairs.isEmpty()) {
             sb.append("\uD83D\uDD7A+\uD83D\uDC83:\n");
             for (int i = 0; i < pairs.size(); i++) {
