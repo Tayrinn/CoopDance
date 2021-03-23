@@ -103,6 +103,8 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
             }
         }
 
+        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), dance.toString());
+
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
         newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(dance.message, messageId));
