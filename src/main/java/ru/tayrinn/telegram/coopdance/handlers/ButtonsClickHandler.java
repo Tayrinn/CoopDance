@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.User;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
 import ru.tayrinn.telegram.coopdance.models.CallbackData;
@@ -38,19 +39,23 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
 
     private void parseCommand() {
         Dance dance = dances.getDance(callbackData.m, messageId);
+        User user = callbackQuery.getFrom();
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
+                if (dance.findSingleDancerAndRemove(user)) {
+                    telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "Вычеркнули из списка ожидания");
+                }
                 String utf = callbackData.c + Commands.SEPARATOR + callbackData.i;
                 sendInlineAnswer(utf);
                 break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :
-                if (dance.findDancer(callbackQuery.getFrom()) != null) {
+                if (dance.findDancer(user) != null) {
                     telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "Вы уже записаны");
                     return;
                 }
-                dance.processCommand(callbackData.c, callbackQuery.getFrom());
+                dance.processCommand(callbackData.c, user);
                 addDanceAndEditMessage(dance);
                 break;
         }
