@@ -1,6 +1,9 @@
 package ru.tayrinn.telegram.coopdance;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
@@ -22,5 +25,12 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void sendException(TelegramCommandsExecutor executor, String chatId, Throwable throwables) {
+        Writer buffer = new StringWriter();
+        PrintWriter pw = new PrintWriter(buffer);
+        throwables.printStackTrace(pw);
+        executor.sendChatMessage(chatId, "exception=" + buffer.toString());
     }
 }

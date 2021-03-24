@@ -6,11 +6,9 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
+import ru.tayrinn.telegram.coopdance.Utils;
 import ru.tayrinn.telegram.coopdance.models.*;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.List;
 
 public class MessageQueryHandler extends BotCommandsHandler<Message> {
@@ -49,16 +47,16 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         try {
             chatDao.writeChatMessage(chatMessage);
         } catch (Exception throwables) {
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), throwables.getMessage());
+            Utils.sendException(telegramCommandsExecutor, msg.getChatId().toString(), throwables);
         }
     }
 
     private void handleMessage(Message msg) {
         Long chatId = msg.getChatId();
         telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Hello world, " + msg.getText() + "!");
-        if (msg.getText().startsWith("/start")) {
+        if (msg.getText().startsWith("/start ")) {
             handleStartMessage(msg);
-        } else if (msg.getText().startsWith("/partner")) {
+        } else if (msg.getText().startsWith("/partner ")) {
             parseUsernameCommand(msg);
         }
     }
@@ -70,10 +68,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
                 parseStartCommandAnswer(chatMessage, msg);
             });
         } catch (Exception throwables) {
-            Writer buffer = new StringWriter();
-            PrintWriter pw = new PrintWriter(buffer);
-            throwables.printStackTrace(pw);
-            telegramCommandsExecutor.sendChatMessage(msg.getChatId().toString(), "exc=" + buffer.toString());
+            Utils.sendException(telegramCommandsExecutor, msg.getChatId().toString(), throwables);
         }
     }
 
@@ -107,8 +102,6 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
                 break;
             }
         }
-
-
 
         EditMessageText newMessage = new EditMessageText();
         newMessage.setInlineMessageId(messageId);
