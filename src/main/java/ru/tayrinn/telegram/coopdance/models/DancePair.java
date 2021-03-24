@@ -19,6 +19,6 @@ public class DancePair {
 
     @Override
     public String toString() {
-        return boy + " и " + girl;
+        return boy + " - " + girl;
     }
 }

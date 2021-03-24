@@ -59,6 +59,12 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
                 dance.processCommand(callbackData.c, user);
                 addDanceAndEditMessage(dance);
                 break;
+            case Commands.CANCEL:
+                if (!dance.findSingleDancerAndRemove(user)) {
+                    dance.findPairAndRemoveDancer(user);
+                }
+                telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "Вы не пойдёте");
+                break;
         }
     }
 

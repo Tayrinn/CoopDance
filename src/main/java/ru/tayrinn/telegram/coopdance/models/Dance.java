@@ -27,21 +27,22 @@ public class Dance {
     }
 
     public boolean hasDancer(User user) {
+        Integer userId = user.getId();
         for (Dancer girl : girls) {
-            if (girl.user.getId().equals(user.getId())) {
+            if (girl.user.getId().equals(userId)) {
                 return true;
             }
         }
         for (Dancer boy : boys) {
-            if (boy.user.getId().equals(user.getId())) {
+            if (boy.user.getId().equals(userId)) {
                 return true;
             }
         }
         for (DancePair pair : pairs) {
-            if (pair.getBoy().user != null && pair.getBoy().user.getId().equals(user.getId())) {
+            if (pair.getBoy().user != null && pair.getBoy().user.getId().equals(userId)) {
                 return true;
             }
-            if (pair.getGirl().user != null && pair.getGirl().user.getId().equals(user.getId())) {
+            if (pair.getGirl().user != null && pair.getGirl().user.getId().equals(userId)) {
                 return true;
             }
         }
@@ -49,15 +50,35 @@ public class Dance {
     }
 
     public boolean findSingleDancerAndRemove(User user) {
+        Integer userId = user.getId();
         for (int i = 0; i < girls.size(); i++) {
-            if (girls.get(i).user.getId().equals(user.getId())) {
+            if (girls.get(i).user.getId().equals(userId)) {
                 girls.remove(i);
                 return true;
             }
         }
         for (int i = 0; i < boys.size(); i++) {
-            if (boys.get(i).user.getId().equals(user.getId())) {
+            if (boys.get(i).user.getId().equals(userId)) {
                 boys.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean findPairAndRemoveDancer(User user) {
+        Integer userId = user.getId();
+        for (int i = 0; i < pairs.size(); i++) {
+            if (pairs.get(i).getBoy() != null && pairs.get(i).getBoy().user.getId().equals(userId)) {
+                Dancer girl = pairs.get(i).getGirl();
+                addDancer(girl, true);
+                pairs.remove(i);
+                return true;
+            }
+            if (pairs.get(i).getGirl() != null && pairs.get(i).getGirl().user.getId().equals(userId)) {
+                Dancer boy = pairs.get(i).getBoy();
+                addDancer(boy, true);
+                pairs.remove(i);
                 return true;
             }
         }
@@ -88,30 +109,38 @@ public class Dance {
         Dancer dancer = new Dancer();
         dancer.user = user;
         dancer.sex = Dancer.Sex.GIRL;
-        addDancer(dancer);
+        addDancer(dancer, false);
     }
 
     public void addBoy(User user) {
         Dancer dancer = new Dancer();
         dancer.user = user;
         dancer.sex = Dancer.Sex.BOY;
-        addDancer(dancer);
+        addDancer(dancer, false);
     }
 
-    private void addDancer(Dancer dancer) {
+    private void addDancer(Dancer dancer, boolean toTheTop) {
         if (dancer.sex.equals(Dancer.Sex.GIRL)) {
             if (!boys.isEmpty()) {
                 Dancer boy = boys.remove(0);
                 pairs.add(new DancePair(dancer, boy));
             } else {
-                girls.add(dancer);
+                if (toTheTop) {
+                    girls.add(0, dancer);
+                } else {
+                    girls.add(dancer);
+                }
             }
         } else {
             if (!girls.isEmpty()) {
                 Dancer girl = girls.remove(0);
                 pairs.add(new DancePair(girl, dancer));
             } else {
-                boys.add(dancer);
+                if (toTheTop) {
+                    boys.add(0, dancer);
+                } else {
+                    boys.add(dancer);
+                }
             }
         }
     }
