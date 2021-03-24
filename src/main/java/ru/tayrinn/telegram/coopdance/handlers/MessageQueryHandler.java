@@ -114,8 +114,8 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         newMessage.setReplyMarkup(keyboardFactory.createDanceKeyboard(dance.message, messageId));
         newMessage.setParseMode(ParseMode.HTML);
         newMessage.setText(dance.toString());
-
         telegramCommandsExecutor.send(newMessage);
-        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы записались с " + partner.stubName);
+
+//        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы записались с " + partner.stubName);
     }
 }
