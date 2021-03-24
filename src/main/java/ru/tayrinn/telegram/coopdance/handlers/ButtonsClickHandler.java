@@ -38,7 +38,9 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
 
     private void parseCommand() {
         Dance dance = dances.getDance(callbackData.m, messageId);
-
+        if (dance.findDancer(callbackQuery.getFrom()) != null) {
+            return;
+        }
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
