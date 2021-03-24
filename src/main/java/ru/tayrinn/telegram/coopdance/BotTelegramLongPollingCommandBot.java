@@ -1,6 +1,7 @@
 package ru.tayrinn.telegram.coopdance;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -63,6 +64,15 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
             message.setText(text);
             message.setChatId(chatId);
             send(message);
+        }
+
+        @Override
+        public void sendAlertMessage(String chatId, String text) {
+            AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
+            answerCallbackQuery.setCallbackQueryId(chatId);
+            answerCallbackQuery.setShowAlert(true);
+            answerCallbackQuery.setText(text);
+            send(answerCallbackQuery);
         }
     }
 }
