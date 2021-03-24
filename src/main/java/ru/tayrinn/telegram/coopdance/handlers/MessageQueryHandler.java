@@ -28,7 +28,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
     private void handleStartMessage(Message msg) {
         SendMessage answer = new SendMessage();
-        answer.setText("Введите имя своего партнера, команда должна начинаться с /partner. Например: /partner Иван Иванов");
+        answer.setText("Введите имя своего партнера, команда должна начинаться с /partner. Например: /partner Свинка Пеппа");
         answer.setChatId(msg.getChatId().toString());
         telegramCommandsExecutor.send(answer);
 
@@ -83,6 +83,10 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
         Dance dance = dances.getDanceByMessageId(messageId);
         dance.findSingleDancerAndRemove(origMessage.getFrom());
+        if (dance.hasDancer(origMessage.getFrom())) {
+            telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы уже записаны с другим партнёром");
+            return;
+        }
 
         Dancer partner = new Dancer();
         partner.stubName = origMessage.getText().substring("/partner ".length()); // "/partner name"
