@@ -53,7 +53,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
     private void handleMessage(Message msg) {
         Long chatId = msg.getChatId();
-        telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Hello world, " + msg.getText() + "!");
+//        telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Hello world, " + msg.getText() + "!");
         if (msg.getText().startsWith("/start ")) {
             handleStartMessage(msg);
         } else if (msg.getText().startsWith("/partner ")) {
