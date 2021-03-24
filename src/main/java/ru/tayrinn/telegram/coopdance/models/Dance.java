@@ -29,12 +29,12 @@ public class Dance {
     public boolean hasDancer(User user) {
         Integer userId = user.getId();
         for (Dancer girl : girls) {
-            if (girl.user.getId().equals(userId)) {
+            if (girl.user != null && girl.user.getId().equals(userId)) {
                 return true;
             }
         }
         for (Dancer boy : boys) {
-            if (boy.user.getId().equals(userId)) {
+            if (boy.user != null && boy.user.getId().equals(userId)) {
                 return true;
             }
         }
