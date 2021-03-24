@@ -70,7 +70,6 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         public void sendAlertMessage(String chatId, String text) {
             AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
             answerCallbackQuery.setCallbackQueryId(chatId);
-            answerCallbackQuery.setShowAlert(true);
             answerCallbackQuery.setText(text);
             send(answerCallbackQuery);
         }
