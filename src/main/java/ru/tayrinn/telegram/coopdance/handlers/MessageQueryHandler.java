@@ -82,12 +82,14 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         String messageId = extractedInfo[1];
 
         Dance dance = dances.getDanceByMessageId(messageId);
+        dance.findSingleDancerAndRemove(origMessage.getFrom());
 
         Dancer partner = new Dancer();
         partner.stubName = origMessage.getText().substring("/partner ".length()); // "/partner name"
 
         Dancer authorDancer = new Dancer();
         authorDancer.user = origMessage.getFrom();
+
         switch (command) {
             case Commands.ADD_GIRL_AND_BOY: {
                 partner.sex = Dancer.Sex.BOY;
@@ -110,5 +112,6 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         newMessage.setText(dance.toString());
 
         telegramCommandsExecutor.send(newMessage);
+        telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы записались с " + partner.stubName);
     }
 }
