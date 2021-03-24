@@ -85,22 +85,6 @@ public class Dance {
         return false;
     }
 
-    public boolean findDancerInPair(User user) {
-        for (int i = 0; i < girls.size(); i++) {
-            if (girls.get(i).user.getId().equals(user.getId())) {
-                girls.remove(i);
-                return true;
-            }
-        }
-        for (int i = 0; i < boys.size(); i++) {
-            if (boys.get(i).user.getId().equals(user.getId())) {
-                boys.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void addPair(Dancer boy, Dancer girl) {
         pairs.add(new DancePair(girl, boy));
     }

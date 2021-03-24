@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.User;
 import ru.tayrinn.telegram.coopdance.InlineKeyboardFactory;
 import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
+import ru.tayrinn.telegram.coopdance.Utils;
 import ru.tayrinn.telegram.coopdance.models.CallbackData;
 import ru.tayrinn.telegram.coopdance.models.Commands;
 import ru.tayrinn.telegram.coopdance.models.Dance;
@@ -34,7 +35,11 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         messageId = data.getInlineMessageId();
         callbackData = Commands.parseCommand(callData);
         callbackData.i = messageId;
-        parseCommand();
+        try {
+            parseCommand();
+        } catch (Exception e) {
+            Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), e);
+        }
     }
 
     private void parseCommand() {
