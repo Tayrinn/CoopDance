@@ -38,10 +38,10 @@ public class Dance {
             }
         }
         for (DancePair pair : pairs) {
-            if (pair.getBoy().user.getId().equals(user.getId())) {
+            if (pair.getBoy().user != null && pair.getBoy().user.getId().equals(user.getId())) {
                 return pair.getBoy();
             }
-            if (pair.getGirl().user.getId().equals(user.getId())) {
+            if (pair.getGirl().user != null && pair.getGirl().user.getId().equals(user.getId())) {
                 return pair.getGirl();
             }
         }
