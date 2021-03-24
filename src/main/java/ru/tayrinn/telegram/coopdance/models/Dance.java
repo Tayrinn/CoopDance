@@ -26,29 +26,45 @@ public class Dance {
         }
     }
 
-    public Dancer findDancer(User user) {
+    public boolean hasDancer(User user) {
         for (Dancer girl : girls) {
             if (girl.user.getId().equals(user.getId())) {
-                return girl;
+                return true;
             }
         }
         for (Dancer boy : boys) {
             if (boy.user.getId().equals(user.getId())) {
-                return boy;
+                return true;
             }
         }
         for (DancePair pair : pairs) {
             if (pair.getBoy().user != null && pair.getBoy().user.getId().equals(user.getId())) {
-                return pair.getBoy();
+                return true;
             }
             if (pair.getGirl().user != null && pair.getGirl().user.getId().equals(user.getId())) {
-                return pair.getGirl();
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     public boolean findSingleDancerAndRemove(User user) {
+        for (int i = 0; i < girls.size(); i++) {
+            if (girls.get(i).user.getId().equals(user.getId())) {
+                girls.remove(i);
+                return true;
+            }
+        }
+        for (int i = 0; i < boys.size(); i++) {
+            if (boys.get(i).user.getId().equals(user.getId())) {
+                boys.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean findDancerInPair(User user) {
         for (int i = 0; i < girls.size(); i++) {
             if (girls.get(i).user.getId().equals(user.getId())) {
                 girls.remove(i);
