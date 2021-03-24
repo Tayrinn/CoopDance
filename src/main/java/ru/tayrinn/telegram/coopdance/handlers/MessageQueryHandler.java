@@ -28,7 +28,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
     private void handleStartMessage(Message msg) {
         SendMessage answer = new SendMessage();
-        answer.setText("Введите имя своего партнера, команда должна начинаться с /partner");
+        answer.setText("Введите имя своего партнера, команда должна начинаться с /partner. Например: /partner Иван Иванов");
         answer.setChatId(msg.getChatId().toString());
         telegramCommandsExecutor.send(answer);
 

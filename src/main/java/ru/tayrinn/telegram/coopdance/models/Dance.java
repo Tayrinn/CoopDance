@@ -52,13 +52,13 @@ public class Dance {
     public boolean findSingleDancerAndRemove(User user) {
         Integer userId = user.getId();
         for (int i = 0; i < girls.size(); i++) {
-            if (girls.get(i).user.getId().equals(userId)) {
+            if (girls.get(i).user != null && girls.get(i).user.getId().equals(userId)) {
                 girls.remove(i);
                 return true;
             }
         }
         for (int i = 0; i < boys.size(); i++) {
-            if (boys.get(i).user.getId().equals(userId)) {
+            if (boys.get(i).user != null && boys.get(i).user.getId().equals(userId)) {
                 boys.remove(i);
                 return true;
             }
