@@ -43,11 +43,11 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
             case Commands.ADD_BOY_AND_GIRL:
+                String utf = callbackData.c + Commands.SEPARATOR + callbackData.i;
+                sendInlineAnswer(utf);
                 if (dance.findSingleDancerAndRemove(user)) {
                     telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "Вычеркнули из списка ожидания");
                 }
-                String utf = callbackData.c + Commands.SEPARATOR + callbackData.i;
-                sendInlineAnswer(utf);
                 break;
             case Commands.ADD_GIRL :
             case Commands.ADD_BOY :

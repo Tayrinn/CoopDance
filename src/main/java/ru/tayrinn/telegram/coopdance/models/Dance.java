@@ -27,22 +27,22 @@ public class Dance {
     }
 
     public Dancer findDancer(User user) {
-        for (int i = 0; i < girls.size(); i++) {
-            if (girls.get(i).user.getId().equals(user.getId())) {
-                return girls.get(i);
+        for (Dancer girl : girls) {
+            if (girl.user.getId().equals(user.getId())) {
+                return girl;
             }
         }
-        for (int i = 0; i < boys.size(); i++) {
-            if (boys.get(i).user.getId().equals(user.getId())) {
-                return boys.get(i);
+        for (Dancer boy : boys) {
+            if (boy.user.getId().equals(user.getId())) {
+                return boy;
             }
         }
-        for (int i = 0; i < pairs.size(); i++) {
-            if (pairs.get(i).getBoy().user.getId().equals(user.getId())) {
-                return pairs.get(i).getBoy();
+        for (DancePair pair : pairs) {
+            if (pair.getBoy().user.getId().equals(user.getId())) {
+                return pair.getBoy();
             }
-            if (pairs.get(i).getGirl().user.getId().equals(user.getId())) {
-                return pairs.get(i).getGirl();
+            if (pair.getGirl().user.getId().equals(user.getId())) {
+                return pair.getGirl();
             }
         }
         return null;
