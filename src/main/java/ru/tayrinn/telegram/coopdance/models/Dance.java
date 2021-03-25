@@ -69,6 +69,10 @@ public class Dance {
     public boolean findPairAndRemoveDancer(User user) {
         for (int i = 0; i < pairs.size(); i++) {
             if (pairs.get(i).getBoy().isUser(user)) {
+                if (pairs.get(i).getGirl().user == null) {
+                    pairs.remove(i);
+                    return true;
+                }
                 for (int j = pairs.size() - 1; j > i; j--) {
                     if (pairs.get(j).isRandomPair()) {
                         pairs.get(i).setBoy(pairs.get(j).getBoy());
@@ -83,7 +87,10 @@ public class Dance {
                 return true;
             }
             if (pairs.get(i).getGirl().isUser(user)) {
-                Dancer boy = pairs.get(i).getBoy();
+                if (pairs.get(i).getBoy().user == null) {
+                    pairs.remove(i);
+                    return true;
+                }
                 for (int j = pairs.size() - 1; j > i; j--) {
                     if (pairs.get(j).isRandomPair()) {
                         pairs.get(i).setGirl(pairs.get(j).getGirl());
@@ -92,6 +99,7 @@ public class Dance {
                         return true;
                     }
                 }
+                Dancer boy = pairs.get(i).getBoy();
                 addDancer(boy, true);
                 pairs.remove(i);
                 return true;
