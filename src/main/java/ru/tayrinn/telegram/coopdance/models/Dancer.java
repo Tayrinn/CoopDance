@@ -15,7 +15,17 @@ public class Dancer {
         if (user == null) {
             return stubName;
         }
-        return "<a href=\"tg://user?id=" + user.getId()+ "\">" + user.getLastName() + " " + user.getFirstName() + "</a>";
+        String lastName = "";
+        if (user.getLastName() != null) {
+            lastName = user.getLastName() + " ";
+        }
+        String name = "";
+        if (user.getFirstName() != null) {
+            name = user.getFirstName();
+        } else if (user.getLastName() == null) {
+            name = user.getUserName() == null ? user.getId().toString() : user.getUserName();
+        }
+        return "<a href=\"tg://user?id=" + user.getId()+ "\">" + lastName + name + "</a>";
     }
 
     public @interface Sex {
