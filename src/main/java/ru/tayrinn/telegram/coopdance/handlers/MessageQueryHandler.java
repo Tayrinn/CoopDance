@@ -53,7 +53,6 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
     private void handleMessage(Message msg) {
         Long chatId = msg.getChatId();
-//        telegramCommandsExecutor.sendChatMessage(chatId.toString(), "Hello world, " + msg.getText() + "!");
         if (msg.getText().startsWith("/start ")) {
             handleStartMessage(msg);
         } else if (msg.getText().startsWith("/partner ")) {
@@ -116,7 +115,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         newMessage.setText(dance.toString());
         telegramCommandsExecutor.send(newMessage);
         try {
-            Thread.sleep(500);
+            Thread.sleep(100);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }

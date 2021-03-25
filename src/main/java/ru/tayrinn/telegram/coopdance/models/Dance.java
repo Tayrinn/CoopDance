@@ -71,12 +71,28 @@ public class Dance {
         for (int i = 0; i < pairs.size(); i++) {
             if (pairs.get(i).getBoy().user != null && pairs.get(i).getBoy().user.getId().equals(userId)) {
                 Dancer girl = pairs.get(i).getGirl();
+                for (int j = pairs.size() - 1; j > i; j--) {
+                    if (!pairs.get(j).isRandomPair()) {
+                        pairs.get(i).setBoy(pairs.get(j).getBoy());
+                        addDancer(pairs.get(j).getGirl(), true);
+                        pairs.remove(j);
+                        return true;
+                    }
+                }
                 addDancer(girl, true);
                 pairs.remove(i);
                 return true;
             }
             if (pairs.get(i).getGirl().user != null && pairs.get(i).getGirl().user.getId().equals(userId)) {
                 Dancer boy = pairs.get(i).getBoy();
+                for (int j = pairs.size() - 1; j > i; j--) {
+                    if (!pairs.get(j).isRandomPair()) {
+                        pairs.get(i).setGirl(pairs.get(j).getGirl());
+                        addDancer(pairs.get(j).getBoy(), true);
+                        pairs.remove(j);
+                        return true;
+                    }
+                }
                 addDancer(boy, true);
                 pairs.remove(i);
                 return true;

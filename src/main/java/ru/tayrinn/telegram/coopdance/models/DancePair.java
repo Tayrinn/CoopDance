@@ -17,8 +17,20 @@ public class DancePair {
         return boy;
     }
 
+    public void setGirl(Dancer girl) {
+        this.girl = girl;
+    }
+
+    public void setBoy(Dancer boy) {
+        this.boy = boy;
+    }
+
     @Override
     public String toString() {
         return boy + " - " + girl;
+    }
+
+    public boolean isRandomPair() {
+        return girl.user != null && boy.user != null;
     }
 }
