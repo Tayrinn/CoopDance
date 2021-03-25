@@ -52,13 +52,13 @@ public class Dance {
     public boolean findSingleDancerAndRemove(User user) {
         Integer userId = user.getId();
         for (int i = 0; i < girls.size(); i++) {
-            if (girls.get(i).user != null && girls.get(i).user.getId().equals(userId)) {
+            if (girls.get(i).isUser(user)) {
                 girls.remove(i);
                 return true;
             }
         }
         for (int i = 0; i < boys.size(); i++) {
-            if (boys.get(i).user != null && boys.get(i).user.getId().equals(userId)) {
+            if (boys.get(i).isUser(user)) {
                 boys.remove(i);
                 return true;
             }
@@ -67,26 +67,25 @@ public class Dance {
     }
 
     public boolean findPairAndRemoveDancer(User user) {
-        Integer userId = user.getId();
         for (int i = 0; i < pairs.size(); i++) {
-            if (pairs.get(i).getBoy().user != null && pairs.get(i).getBoy().user.getId().equals(userId)) {
-                Dancer girl = pairs.get(i).getGirl();
+            if (pairs.get(i).getBoy().isUser(user)) {
                 for (int j = pairs.size() - 1; j > i; j--) {
-                    if (!pairs.get(j).isRandomPair()) {
+                    if (pairs.get(j).isRandomPair()) {
                         pairs.get(i).setBoy(pairs.get(j).getBoy());
                         addDancer(pairs.get(j).getGirl(), true);
                         pairs.remove(j);
                         return true;
                     }
                 }
+                Dancer girl = pairs.get(i).getGirl();
                 addDancer(girl, true);
                 pairs.remove(i);
                 return true;
             }
-            if (pairs.get(i).getGirl().user != null && pairs.get(i).getGirl().user.getId().equals(userId)) {
+            if (pairs.get(i).getGirl().isUser(user)) {
                 Dancer boy = pairs.get(i).getBoy();
                 for (int j = pairs.size() - 1; j > i; j--) {
-                    if (!pairs.get(j).isRandomPair()) {
+                    if (pairs.get(j).isRandomPair()) {
                         pairs.get(i).setGirl(pairs.get(j).getGirl());
                         addDancer(pairs.get(j).getBoy(), true);
                         pairs.remove(j);

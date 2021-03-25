@@ -28,6 +28,10 @@ public class Dancer {
         return "<a href=\"tg://user?id=" + user.getId()+ "\">" + lastName + name + "</a>";
     }
 
+    public boolean isUser(User another) {
+        return user != null && user.getId().equals(another.getId());
+    }
+
     public @interface Sex {
         String GIRL = "girl";
         String BOY = "boy";
