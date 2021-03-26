@@ -28,7 +28,7 @@ public class InlineKeyboardFactory {
 //        boyAndGirl.setCallbackData(Commands.format(Commands.ADD_BOY_AND_GIRL, message, messageId));
 
         InlineKeyboardButton refresh = new InlineKeyboardButton();
-        refresh.setText("\u1F504");
+        refresh.setText("\uD83D\uDD04");
         refresh.setCallbackData(Commands.format(Commands.REFRESH, message, messageId));
 
         InlineKeyboardButton cancel = new InlineKeyboardButton();
