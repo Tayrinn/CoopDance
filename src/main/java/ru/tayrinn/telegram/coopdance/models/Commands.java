@@ -9,6 +9,7 @@ public class Commands {
     public static final String ADD_GIRL_AND_BOY = "3";
     public static final String ADD_BOY_AND_GIRL = "4";
     public static final String CANCEL = "5";
+    public static final String REFRESH = "6";
     private static Gson gson = new Gson();
 
 

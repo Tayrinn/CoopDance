@@ -71,6 +71,9 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
                 telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "Вы не пойдёте");
                 addDanceAndEditMessage(dance);
                 break;
+            case Commands.REFRESH:
+                addDanceAndEditMessage(dance);
+                break;
         }
     }
 
