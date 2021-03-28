@@ -87,6 +87,9 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         } catch (SQLException throwables) {
             Utils.sendException(telegramCommandsExecutor, origMessage.getChatId().toString(), throwables);
         }
+        if (dance == null) {
+            telegramCommandsExecutor.sendAlertMessage(origMessage.getChatId().toString(), "dance=null");
+        }
         dance.findSingleDancerAndRemove(origMessage.getFrom());
         if (dance.hasDancer(origMessage.getFrom())) {
             telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы уже записаны с другим партнёром");
