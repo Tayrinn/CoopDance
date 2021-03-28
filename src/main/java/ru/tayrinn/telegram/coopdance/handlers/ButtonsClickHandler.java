@@ -48,7 +48,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         Dance dance = null;
         try {
             dance = dances.getDance(callbackData.m, messageId);
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), throwables);
             return;
         }

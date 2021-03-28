@@ -16,7 +16,7 @@ public class ChatDaoImpl implements ChatDao {
     private static final String SELECT_LAST_CHAT_MESSAGES_QUERY = "SELECT top ? * FROM CHAT_MESSAGES WHERE CHAT_ID = ?";
     private static final String DROP = "DROP TABLE IF EXISTS CHAT_MESSAGES";
     private static final String CREATE_CHAT_MESSAGES = "" +
-            "CREATE IF NOT EXISTS TABLE CHAT_MESSAGES (" +
+            "CREATE TABLE IF NOT EXISTS CHAT_MESSAGES (" +
             ChatMessage.KEY_CHAT_ID + " TEXT," +
             ChatMessage.KEY_TEXT + " TEXT," +
             ChatMessage.KEY_MESSAGE_ID + " TEXT," +
@@ -25,7 +25,7 @@ public class ChatDaoImpl implements ChatDao {
             ChatMessage.KEY_PAYLOAD + " TEXT," +
             ChatMessage.KEY_TIMESTAMP + " TIMESTAMP" +
             ")";
-    private static final String CREATE_DANCES = "CREATE IF NOT EXISTS TABLE DANCES (" +
+    private static final String CREATE_DANCES = "CREATE TABLE IF NOT EXISTS DANCES (" +
             Dance.KEY_MESSAGE_ID + " TEXT," +
             Dance.KEY_JSON + " TEXT, " +
             ChatMessage.KEY_TIMESTAMP + " TIMESTAMP" +
