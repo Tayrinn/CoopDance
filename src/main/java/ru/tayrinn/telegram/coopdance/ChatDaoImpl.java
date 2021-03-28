@@ -84,7 +84,7 @@ public class ChatDaoImpl implements ChatDao {
 
     @Override
     public Dance getDanceByMessageId(String messageId) throws SQLException {
-        ResultSet resultSet = stmt.executeQuery("SELECT + FROM DANCES WHERE " +
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM DANCES WHERE " +
                 Dance.KEY_MESSAGE_ID + " = '" + messageId + "'" + " ORDER BY " +
                 ChatMessage.KEY_TIMESTAMP + " DESC");
         Dance dance = null;
