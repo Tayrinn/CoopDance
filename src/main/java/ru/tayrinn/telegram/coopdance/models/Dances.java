@@ -12,18 +12,13 @@ public class Dances {
         this.chatDao = chatDao;
     }
 
-    public Dance getDance(String message, String messageId) {
-        try {
-            Dance dance = chatDao.getDanceByMessageId(messageId);
-            if (dance == null) {
-                dance = new Dance(message, messageId);
-                chatDao.writeDance(dance);
-            }
-            return dance;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+    public Dance getDance(String message, String messageId) throws SQLException {
+        Dance dance = chatDao.getDanceByMessageId(messageId);
+        if (dance == null) {
+            dance = new Dance(message, messageId);
+            chatDao.writeDance(dance);
         }
-        return null;
+        return dance;
 //        AtomicReference<Dance> result = new AtomicReference<>();
 //        danceList.forEach(dance -> {
 //            if (dance.messageId.equals(messageId)) {
@@ -43,7 +38,7 @@ public class Dances {
         chatDao.writeDance(dance);
     }
 
-    public Dance getDanceByMessageId(String messageId) {
+    public Dance getDanceByMessageId(String messageId) throws SQLException {
         return getDance("Коллективка", messageId);
     }
 }

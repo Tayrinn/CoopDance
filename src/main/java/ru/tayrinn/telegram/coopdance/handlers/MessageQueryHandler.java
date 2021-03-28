@@ -9,6 +9,7 @@ import ru.tayrinn.telegram.coopdance.TelegramCommandsExecutor;
 import ru.tayrinn.telegram.coopdance.Utils;
 import ru.tayrinn.telegram.coopdance.models.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class MessageQueryHandler extends BotCommandsHandler<Message> {
@@ -80,7 +81,12 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         String command = extractedInfo[0];
         String messageId = extractedInfo[1];
 
-        Dance dance = dances.getDanceByMessageId(messageId);
+        Dance dance = null;
+        try {
+            dance = dances.getDanceByMessageId(messageId);
+        } catch (SQLException throwables) {
+            Utils.sendException(telegramCommandsExecutor, origMessage.getChatId().toString(), throwables);
+        }
         dance.findSingleDancerAndRemove(origMessage.getFrom());
         if (dance.hasDancer(origMessage.getFrom())) {
             telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы уже записаны с другим партнёром");

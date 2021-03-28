@@ -45,7 +45,12 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
     }
 
     private void parseCommand() {
-        Dance dance = dances.getDance(callbackData.m, messageId);
+        Dance dance = null;
+        try {
+            dance = dances.getDance(callbackData.m, messageId);
+        } catch (SQLException throwables) {
+            Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), throwables);
+        }
         User user = callbackQuery.getFrom();
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
@@ -80,7 +85,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         try {
             dances.writeDance(dance);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), throwables);
         }
     }
 
