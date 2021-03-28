@@ -26,8 +26,9 @@ public class ChatDaoImpl implements ChatDao {
             ChatMessage.KEY_TIMESTAMP + " TIMESTAMP" +
             ")";
     private static final String CREATE_DANCES = "CREATE IF NOT EXISTS TABLE DANCES (" +
-            Dance.KEY_MESSAGE_ID + " PRIMARY KEY TEXT," +
-            Dance.KEY_JSON + " TEXT" +
+            Dance.KEY_MESSAGE_ID + " TEXT," +
+            Dance.KEY_JSON + " TEXT, " +
+            ChatMessage.KEY_TIMESTAMP + " TIMESTAMP" +
             ")";
 
     private Statement stmt;
@@ -69,13 +70,14 @@ public class ChatDaoImpl implements ChatDao {
 
     @Override
     public void writeDance(Dance dance) throws SQLException {
-        stmt.execute("REPLACE INTO DANCES(" +
+        stmt.execute("INSERT INTO DANCES(" +
                 Dance.KEY_MESSAGE_ID + ", " +
                 Dance.KEY_JSON + "" +
                 ")" +
                 " VALUES(" +
                 "'" + dance.messageId + "', " +
-                "'" + gson.toJson(dance) + "'" +
+                "'" + gson.toJson(dance) + "'," +
+                "now()" +
                 ")"
         );
     }
@@ -83,7 +85,8 @@ public class ChatDaoImpl implements ChatDao {
     @Override
     public Dance getDanceByMessageId(String messageId) throws SQLException {
         ResultSet resultSet = stmt.executeQuery("SELECT + FROM DANCES WHERE " +
-                Dance.KEY_MESSAGE_ID + " = '" + messageId + "'");
+                Dance.KEY_MESSAGE_ID + " = '" + messageId + "'" + " ORDER BY " +
+                ChatMessage.KEY_TIMESTAMP + " DESC");
         Dance dance = null;
         if (resultSet.next()) {
             dance = gson.fromJson(resultSet.getString(Dance.KEY_JSON), Dance.class);
