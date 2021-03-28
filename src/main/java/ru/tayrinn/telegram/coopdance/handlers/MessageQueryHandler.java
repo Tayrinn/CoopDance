@@ -125,14 +125,15 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         newMessage.setText(dance.toString());
         telegramCommandsExecutor.send(newMessage);
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        }
-        try {
             dances.writeDance(dance);
         } catch (SQLException throwables) {
             Utils.sendException(telegramCommandsExecutor, origMessage.getChatId().toString(), throwables);
+        }
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
         telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы записались с " + partner.stubName);
     }
