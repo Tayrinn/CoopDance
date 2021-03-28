@@ -16,7 +16,7 @@ public class BotCommandsController {
     private final ButtonsClickHandler buttonsClickHandler;
     private final InlineQueryHandler inlineQueryHandler;
     private final MessageQueryHandler messageQueryHandler;
-    private final Dances dances = new Dances();
+    private Dances dances;
     private ChatDao chatDao;
 
     public BotCommandsController(TelegramCommandsExecutor telegramCommandsExecutor,
@@ -24,6 +24,7 @@ public class BotCommandsController {
         try {
             chatDao = new ChatDaoImpl(dataSource);
             chatDao.create();
+            dances = new Dances(chatDao);
         } catch (SQLException throwables) {
             //telegramCommandsExecutor.sendChatMessage();
         }

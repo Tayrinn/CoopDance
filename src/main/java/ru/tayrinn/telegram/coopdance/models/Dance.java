@@ -7,6 +7,9 @@ import java.util.List;
 
 public class Dance {
 
+    public final static String KEY_MESSAGE_ID = "key_message_id";
+    public final static String KEY_JSON = "key_json";
+
     public final String message;
     public final String messageId;
     private final List<Dancer> girls = new ArrayList<>();

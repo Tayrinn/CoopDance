@@ -13,6 +13,8 @@ import ru.tayrinn.telegram.coopdance.models.Commands;
 import ru.tayrinn.telegram.coopdance.models.Dance;
 import ru.tayrinn.telegram.coopdance.models.Dances;
 
+import java.sql.SQLException;
+
 /**
  * Класс для обработки коллбеков - событий при нажатии на кнопки бота
  */
@@ -74,6 +76,11 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
             case Commands.REFRESH:
                 addDanceAndEditMessage(dance);
                 break;
+        }
+        try {
+            dances.writeDance(dance);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 

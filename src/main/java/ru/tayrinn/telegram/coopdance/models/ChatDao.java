@@ -9,6 +9,10 @@ public interface ChatDao {
 
     void writeChatMessage(ChatMessage chatMessage) throws SQLException;
 
+    void writeDance(Dance dance) throws SQLException;
+
+    Dance getDanceByMessageId(String messageId) throws SQLException;
+
     List<ChatMessage> getLastChatMessages(String chatId, String authorName, Integer count) throws SQLException;
 
     void updateChatMessage(ChatMessage chatMessage);
