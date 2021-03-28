@@ -56,7 +56,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
             telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "dance=null");
             return;
         }
-
+        telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "dance=" + dance.messageId);
         User user = callbackQuery.getFrom();
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
