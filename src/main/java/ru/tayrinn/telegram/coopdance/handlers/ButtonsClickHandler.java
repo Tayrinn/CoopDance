@@ -50,7 +50,13 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
             dance = dances.getDance(callbackData.m, messageId);
         } catch (SQLException throwables) {
             Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), throwables);
+            return;
         }
+        if (dance == null) {
+            telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "dance=null");
+            return;
+        }
+
         User user = callbackQuery.getFrom();
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
