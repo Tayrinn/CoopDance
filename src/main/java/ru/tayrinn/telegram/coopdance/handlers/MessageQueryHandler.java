@@ -129,6 +129,11 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }
+        try {
+            dances.writeDance(dance);
+        } catch (SQLException throwables) {
+            Utils.sendException(telegramCommandsExecutor, origMessage.getChatId().toString(), throwables);
+        }
         telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы записались с " + partner.stubName);
     }
 }
