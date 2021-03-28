@@ -31,6 +31,6 @@ public class Utils {
         Writer buffer = new StringWriter();
         PrintWriter pw = new PrintWriter(buffer);
         throwables.printStackTrace(pw);
-        executor.sendChatMessage(chatId, "exception=" + buffer.toString());
+        executor.sendAlertMessage(chatId, "exception=" + buffer.toString());
     }
 }
