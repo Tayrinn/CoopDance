@@ -27,7 +27,7 @@ public class ChatDaoImpl implements ChatDao {
             ")";
     private static final String CREATE_DANCES = "CREATE IF NOT EXISTS TABLE DANCES (" +
             Dance.KEY_MESSAGE_ID + " PRIMARY KEY TEXT," +
-            Dance.KEY_JSON + " TEXT," +
+            Dance.KEY_JSON + " TEXT" +
             ")";
 
     private Statement stmt;
