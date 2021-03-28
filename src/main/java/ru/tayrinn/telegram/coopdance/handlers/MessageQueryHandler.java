@@ -89,6 +89,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
         }
         if (dance == null) {
             telegramCommandsExecutor.sendAlertMessage(origMessage.getChatId().toString(), "dance=null");
+            return;
         }
         dance.findSingleDancerAndRemove(origMessage.getFrom());
         if (dance.hasDancer(origMessage.getFrom())) {
