@@ -49,15 +49,13 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         try {
             dance = dances.getDance(callbackData.m, messageId);
         } catch (Exception throwables) {
-            telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "exc=" + throwables.toString());
-            //Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), throwables);
+            Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), throwables);
             return;
         }
         if (dance == null) {
             telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "dance=null");
             return;
         }
-        telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "dance=" + dance.messageId);
         User user = callbackQuery.getFrom();
         switch (callbackData.c) {
             case Commands.ADD_GIRL_AND_BOY:
