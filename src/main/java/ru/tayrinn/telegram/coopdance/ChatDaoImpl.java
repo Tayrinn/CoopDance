@@ -72,7 +72,8 @@ public class ChatDaoImpl implements ChatDao {
     public void writeDance(Dance dance) throws SQLException {
         stmt.execute("INSERT INTO DANCES(" +
                 Dance.KEY_MESSAGE_ID + ", " +
-                Dance.KEY_JSON + "" +
+                Dance.KEY_JSON + "," +
+                ChatMessage.KEY_TIMESTAMP +
                 ")" +
                 " VALUES(" +
                 "'" + dance.messageId + "', " +
