@@ -32,12 +32,12 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
 
     @Override
     public void handle(CallbackQuery data) {
-        callbackQuery = data;
-        String callData = data.getData();
-        messageId = data.getInlineMessageId();
-        callbackData = Commands.parseCommand(callData);
-        callbackData.i = messageId;
         try {
+            callbackQuery = data;
+            String callData = data.getData();
+            messageId = data.getInlineMessageId();
+            callbackData = Commands.parseCommand(callData);
+            callbackData.i = messageId;
             parseCommand();
         } catch (Exception e) {
             Utils.sendException(telegramCommandsExecutor, callbackQuery.getId(), e);

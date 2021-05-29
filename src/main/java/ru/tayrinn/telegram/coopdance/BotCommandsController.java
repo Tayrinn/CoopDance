@@ -26,7 +26,7 @@ public class BotCommandsController {
             chatDao.create();
             dances = new Dances(chatDao);
         } catch (SQLException throwables) {
-            //telegramCommandsExecutor.sendChatMessage();
+            //Utils.sendException(telegramCommandsExecutor, throwables);
         }
         messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory, chatDao, dances);
         buttonsClickHandler = new ButtonsClickHandler(telegramCommandsExecutor, keyboardFactory, dances);
