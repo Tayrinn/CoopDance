@@ -54,6 +54,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
         }
         if (dance == null) {
             telegramCommandsExecutor.sendAlertMessage(callbackQuery.getId(), "dance=null");
+
             return;
         }
         User user = callbackQuery.getFrom();
