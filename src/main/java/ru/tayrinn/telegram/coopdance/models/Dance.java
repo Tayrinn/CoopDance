@@ -28,7 +28,17 @@ public class Dance {
             default: // do nothing
         }
     }
-
+    public Dancer findDancerByUserName(String userName) {
+        for (Dancer girl: girls) {
+            if (girl.user.getUserName().equals(userName))
+                return girl;
+        }
+        for (Dancer boy: boys) {
+            if (boy.user.getUserName().equals(userName))
+                return boy;
+        }
+        return null;
+    }
     public boolean hasDancer(User user) {
         Integer userId = user.getId();
         for (Dancer girl : girls) {

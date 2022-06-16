@@ -97,8 +97,14 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
             return;
         }
 
-        Dancer partner = new Dancer();
-        partner.stubName = origMessage.getText().substring("/partner ".length()); // "/partner name"
+
+
+        String partnerStubName = origMessage.getText().substring("/partner ".length());
+        Dancer partner = dance.findDancerByUserName(partnerStubName);
+        if (partner == null) {
+            partner = new Dancer();
+            partner.stubName = partnerStubName;
+        }
 
         Dancer authorDancer = new Dancer();
         authorDancer.user = origMessage.getFrom();
