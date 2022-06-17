@@ -9,7 +9,12 @@ public class Dancer {
     public String ashNumber;
     public String stubName;
     public User user;
+    private Integer number;
+    private static Integer lastNumber = 0;
 
+    public Dancer() {
+        this.number = Dancer.lastNumber++;
+    }
     @Override
     public String toString() {
         if (user == null) {
@@ -30,6 +35,14 @@ public class Dancer {
 
     public boolean isUser(User another) {
         return user != null && user.getId().equals(another.getId());
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public @interface Sex {
