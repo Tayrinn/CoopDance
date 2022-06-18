@@ -99,7 +99,7 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
 
 
 
-        String partnerStubName = origMessage.getText().substring("/partner ".length());
+        String partnerStubName = origMessage.getText().substring("/partner ".length()).trim();
         Dancer partner = dance.findDancerByUserName(partnerStubName);
         if (partner == null) {
             partner = new Dancer();

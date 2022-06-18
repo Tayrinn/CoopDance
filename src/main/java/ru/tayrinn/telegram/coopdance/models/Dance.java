@@ -91,18 +91,9 @@ public class Dance {
                     pairs.remove(i);
                     return true;
                 }
-                for (int j = pairs.size() - 1; j > i; j--) {
-                    if (pairs.get(j).isRandomPair()) {
-                        pairs.get(i).setBoy(pairs.get(j).getBoy());
-                        // addDancer(pairs.get(j).getGirl(), true);
-                        addDancerToWaitlist(girls, pairs.get(j).getGirl());
-                        pairs.remove(j);
-                        return true;
-                    }
-                }
                 Dancer girl = pairs.get(i).getGirl();
-                // addDancer(girl, true);
-                addDancerToWaitlist(girls, girl);
+                addGirl(girl.user);
+                //addDancerToWaitlist(girl);
                 pairs.remove(i);
                 return true;
             }
@@ -111,18 +102,9 @@ public class Dance {
                     pairs.remove(i);
                     return true;
                 }
-                for (int j = pairs.size() - 1; j > i; j--) {
-                    if (pairs.get(j).isRandomPair()) {
-                        pairs.get(i).setGirl(pairs.get(j).getGirl());
-                        // addDancer(pairs.get(j).getBoy(), true);
-                        addDancerToWaitlist(boys, pairs.get(j).getBoy());
-                        pairs.remove(j);
-                        return true;
-                    }
-                }
                 Dancer boy = pairs.get(i).getBoy();
-                // addDancer(boy, true);
-                addDancerToWaitlist(boys, boy);
+                addBoy(boy.user);
+                //addDancerToWaitlist(boy);
                 pairs.remove(i);
                 return true;
             }
@@ -155,18 +137,31 @@ public class Dance {
                 Dancer boy = boys.remove(0);
                 pairs.add(new DancePair(dancer, boy));
             } else {
-                addDancerToWaitlist(girls, dancer);
+                addDancerToWaitlist(dancer);
             }
         } else {
             if (!girls.isEmpty()) {
                 Dancer girl = girls.remove(0);
                 pairs.add(new DancePair(girl, dancer));
             } else {
-                addDancerToWaitlist(boys, dancer);
+                addDancerToWaitlist(dancer);
             }
         }
     }
-    private void addDancerToWaitlist(List<Dancer> waitlist, Dancer dancer) {
+    private void addDancerToWaitlist(Dancer dancer) {
+        // если есть свободные партнёры в списке одидания
+        var waitlist = dancer.sex.equals(Dancer.Sex.GIRL) ? this.girls : this.boys;
+        if (waitlist.isEmpty()) {
+            var otherList = dancer.sex.equals(Dancer.Sex.GIRL) ? this.boys : this.girls;
+            if (!otherList.isEmpty()) {
+                if (dancer.sex.equals(Dancer.Sex.GIRL))
+                    addPair(otherList.get(0), dancer);
+                else
+                    addPair(dancer, otherList.get(0));
+                return;
+            }
+        }
+        // добавить в список ожидания
         for (int i = 0; i < waitlist.size(); ++i)
         {
             if (dancer.getNumber() < waitlist.get(i).getNumber()) {
