@@ -2,6 +2,7 @@ package ru.tayrinn.telegram.coopdance.models;
 
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,19 +30,23 @@ public class Dance {
         }
     }
     public Dancer findDancerByUserName(String userName) {
+        return findDancerByUserName(userName, null);
+    }
+
+    public Dancer findDancerByUserName(String userName, Dancer defaultDancer) {
         int i = 0;
         for (Dancer girl: girls) {
-            if (girl.user.getUserName().equals(userName))
+            if (girl.user.getUserName().equals(userName) || girl.stubName.equals(userName))
                 return girl;
             ++i;
         }
         i = 0;
         for (Dancer boy: boys) {
-            if (boy.user.getUserName().equals(userName))
+            if (boy.user.getUserName().equals(userName) || boy.stubName.equals(userName))
                 return boy;
             ++i;
         }
-        return null;
+        return defaultDancer;
     }
     public boolean hasDancer(User user) {
         Integer userId = user.getId();
