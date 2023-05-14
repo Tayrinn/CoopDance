@@ -1,5 +1,6 @@
 package ru.tayrinn.telegram.coopdance.models;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 public class Dancer {
@@ -25,7 +26,7 @@ public class Dancer {
         } else if (user.getLastName() == null) {
             name = user.getUserName() == null ? user.getId().toString() : user.getUserName();
         }
-        return "<a href=\"tg://user?id=" + user.getId()+ "\">" + lastName + name + "</a>";
+        return "<a href=\"tg://user?id=" + user.getId()+ "\">" + StringEscapeUtils.escapeHtml4(lastName) + StringEscapeUtils.escapeHtml4(name) + "</a>";
     }
 
     public boolean isUser(User another) {
