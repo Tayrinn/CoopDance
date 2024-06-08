@@ -1,0 +1,30 @@
+version: "3"
+services:
+
+  # Бот
+  bot:
+    build: .
+    depends_on:
+      - db
+    environment:
+      BOT_NAME: ${BOT_NAME}
+      BOT_TOKEN: ${BOT_TOKEN}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
+    restart: always
+    logging:
+      options:
+        max-size: 10m
+
+  # База данных
+  db:
+    image: postgres:16.3
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /srv/coopdance/db:/var/lib/postgresql/data
+    restart: always
+    logging:
+      options:
+        max-size: 10m
