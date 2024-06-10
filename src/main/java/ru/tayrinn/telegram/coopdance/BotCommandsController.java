@@ -20,7 +20,7 @@ public class BotCommandsController {
     private ChatDao chatDao;
 
     public BotCommandsController(TelegramCommandsExecutor telegramCommandsExecutor,
-                                 DataSource dataSource) {
+                                 DataSource dataSource, String botName) {
         try {
             chatDao = new ChatDaoImpl(dataSource);
             chatDao.create();
@@ -29,7 +29,7 @@ public class BotCommandsController {
             //Utils.sendException(telegramCommandsExecutor, throwables);
         }
         messageQueryHandler = new MessageQueryHandler(telegramCommandsExecutor, keyboardFactory, chatDao, dances);
-        buttonsClickHandler = new ButtonsClickHandler(telegramCommandsExecutor, keyboardFactory, dances);
+        buttonsClickHandler = new ButtonsClickHandler(telegramCommandsExecutor, keyboardFactory, dances, botName);
         inlineQueryHandler = new InlineQueryHandler(telegramCommandsExecutor, keyboardFactory);
     }
 

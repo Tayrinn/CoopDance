@@ -21,13 +21,15 @@ import java.sql.SQLException;
 public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
 
     private final Dances dances;
+    private String botName;
     private CallbackData callbackData; // данные, которые зашиваются в кнопку при создании
     private CallbackQuery callbackQuery;
     private String messageId;
 
-    public ButtonsClickHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, Dances dances) {
+    public ButtonsClickHandler(TelegramCommandsExecutor telegramCommandsExecutor, InlineKeyboardFactory keyboardFactory, Dances dances, String botName) {
         super(telegramCommandsExecutor, keyboardFactory);
         this.dances = dances;
+        this.botName = botName;
     }
 
     @Override
@@ -107,7 +109,7 @@ public class ButtonsClickHandler extends BotCommandsHandler<CallbackQuery> {
     private void sendInlineAnswer(String command) {
         AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
         answerCallbackQuery.setCallbackQueryId(callbackQuery.getId());
-        answerCallbackQuery.setUrl("t.me/CoopDanceBot?start=" + command);
+        answerCallbackQuery.setUrl("t.me/" + this.botName + "?start=" + command);
 
         telegramCommandsExecutor.send(answerCallbackQuery);
     }

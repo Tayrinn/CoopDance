@@ -20,7 +20,7 @@ public class BotTelegramLongPollingCommandBot extends TelegramLongPollingBot {
         BOT_TOKEN = botToken;
         DATABASE_URL = database_url;
         DbConfig config = new DbConfig();
-        botCommandsController = new BotCommandsController(new TelegramCommandsExecutorImpl(), config.dataSource());
+        botCommandsController = new BotCommandsController(new TelegramCommandsExecutorImpl(), config.dataSource(), botName);
     }
 
     @Override
