@@ -91,17 +91,30 @@ public class MessageQueryHandler extends BotCommandsHandler<Message> {
             telegramCommandsExecutor.sendAlertMessage(origMessage.getChatId().toString(), "dance=null");
             return;
         }
-        dance.findSingleDancerAndRemove(origMessage.getFrom());
+
+        Dancer authorDancer = new Dancer();
+        authorDancer.user = origMessage.getFrom();
+        authorDancer = dance.findDancerByUserName(authorDancer.user.getUserName(), authorDancer);
+        dance.findSingleDancerAndRemove(authorDancer.user);
         if (dance.hasDancer(origMessage.getFrom())) {
             telegramCommandsExecutor.sendChatMessage(origMessage.getChatId().toString(), "Вы уже записаны с другим партнёром");
             return;
         }
 
-        Dancer partner = new Dancer();
-        partner.stubName = origMessage.getText().substring("/partner ".length()); // "/partner name"
+        String partnerStubName = origMessage.getText().substring("/partner ".length()).trim();
+        Dancer partner = dance.findDancerByUserName(partnerStubName);
+        if (partner == null || partner.user == null) {
+            partner = new Dancer();
+            partner.stubName = partnerStubName;
+        }
+        else
+            dance.findSingleDancerAndRemove(partner.user);
 
-        Dancer authorDancer = new Dancer();
-        authorDancer.user = origMessage.getFrom();
+        // поменять команду, если лидер зовёт фолловера
+        if (command.equals(Commands.ADD_GIRL_AND_BOY)
+            && (authorDancer.sex.equals(Dancer.Sex.BOY)
+                || partner.sex.equals(Dancer.Sex.GIRL)))
+            command = Commands.ADD_BOY_AND_GIRL;
 
         switch (command) {
             case Commands.ADD_GIRL_AND_BOY: {
