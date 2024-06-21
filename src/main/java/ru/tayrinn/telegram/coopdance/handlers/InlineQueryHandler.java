@@ -30,7 +30,8 @@ public class InlineQueryHandler extends BotCommandsHandler<InlineQuery> {
         List<InlineQueryResult> results = new ArrayList<>();
         InlineQueryResultArticle article = new InlineQueryResultArticle();
         InputTextMessageContent messageContent = new InputTextMessageContent();
-        String text = inlineQuery.getQuery() == null ? "Коллективка" : inlineQuery.getQuery();
+        String queryText = inlineQuery.getQuery() == null ? new String() : inlineQuery.getQuery();
+        String text = queryText.isEmpty() ? "Коллективка" : queryText;
         messageContent.setMessageText(text);
         article.setInputMessageContent(messageContent);
         article.setId(text);
