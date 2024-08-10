@@ -30,7 +30,7 @@ public class Dance {
     }
 
     public boolean hasDancer(User user) {
-        Integer userId = user.getId();
+        Long userId = user.getId();
         for (Dancer girl : girls) {
             if (girl.user != null && girl.user.getId().equals(userId)) {
                 return true;
@@ -53,7 +53,7 @@ public class Dance {
     }
 
     public boolean findSingleDancerAndRemove(User user) {
-        Integer userId = user.getId();
+        Long userId = user.getId();
         for (int i = 0; i < girls.size(); i++) {
             if (girls.get(i).isUser(user)) {
                 girls.remove(i);
