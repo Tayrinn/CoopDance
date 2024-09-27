@@ -2,6 +2,7 @@ package ru.tayrinn.telegram.coopdance.models;
 
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,25 @@ public class Dance {
             default: // do nothing
         }
     }
+    public Dancer findDancerByUserName(String userName) {
+        return findDancerByUserName(userName, null);
+    }
 
+    public Dancer findDancerByUserName(String userName, Dancer defaultDancer) {
+        int i = 0;
+        for (Dancer girl: girls) {
+            if (girl.user.getUserName().equals(userName) || girl.stubName.equals(userName))
+                return girl;
+            ++i;
+        }
+        i = 0;
+        for (Dancer boy: boys) {
+            if (boy.user.getUserName().equals(userName) || boy.stubName.equals(userName))
+                return boy;
+            ++i;
+        }
+        return defaultDancer;
+    }
     public boolean hasDancer(User user) {
         Long userId = user.getId();
         for (Dancer girl : girls) {
@@ -70,22 +89,16 @@ public class Dance {
     }
 
     public boolean findPairAndRemoveDancer(User user) {
+        ///TODO: надо отрефакторить, код повторяется
         for (int i = 0; i < pairs.size(); i++) {
             if (pairs.get(i).getBoy().isUser(user)) {
                 if (pairs.get(i).getGirl().user == null) {
                     pairs.remove(i);
                     return true;
                 }
-                for (int j = pairs.size() - 1; j > i; j--) {
-                    if (pairs.get(j).isRandomPair()) {
-                        pairs.get(i).setBoy(pairs.get(j).getBoy());
-                        addDancer(pairs.get(j).getGirl(), true);
-                        pairs.remove(j);
-                        return true;
-                    }
-                }
                 Dancer girl = pairs.get(i).getGirl();
-                addDancer(girl, true);
+                addGirl(girl.user);
+                //addDancerToWaitlist(girl);
                 pairs.remove(i);
                 return true;
             }
@@ -94,16 +107,9 @@ public class Dance {
                     pairs.remove(i);
                     return true;
                 }
-                for (int j = pairs.size() - 1; j > i; j--) {
-                    if (pairs.get(j).isRandomPair()) {
-                        pairs.get(i).setGirl(pairs.get(j).getGirl());
-                        addDancer(pairs.get(j).getBoy(), true);
-                        pairs.remove(j);
-                        return true;
-                    }
-                }
                 Dancer boy = pairs.get(i).getBoy();
-                addDancer(boy, true);
+                addBoy(boy.user);
+                //addDancerToWaitlist(boy);
                 pairs.remove(i);
                 return true;
             }
@@ -119,40 +125,56 @@ public class Dance {
         Dancer dancer = new Dancer();
         dancer.user = user;
         dancer.sex = Dancer.Sex.GIRL;
-        addDancer(dancer, false);
+        addDancer(dancer);
     }
 
     public void addBoy(User user) {
         Dancer dancer = new Dancer();
         dancer.user = user;
         dancer.sex = Dancer.Sex.BOY;
-        addDancer(dancer, false);
+        addDancer(dancer);
     }
 
-    private void addDancer(Dancer dancer, boolean toTheTop) {
+    private void addDancer(Dancer dancer) {
+        ///TODO: надо отрефакторить, код повторяется
         if (dancer.sex.equals(Dancer.Sex.GIRL)) {
             if (!boys.isEmpty()) {
                 Dancer boy = boys.remove(0);
                 pairs.add(new DancePair(dancer, boy));
             } else {
-                if (toTheTop) {
-                    girls.add(0, dancer);
-                } else {
-                    girls.add(dancer);
-                }
+                addDancerToWaitlist(dancer);
             }
         } else {
             if (!girls.isEmpty()) {
                 Dancer girl = girls.remove(0);
                 pairs.add(new DancePair(girl, dancer));
             } else {
-                if (toTheTop) {
-                    boys.add(0, dancer);
-                } else {
-                    boys.add(dancer);
-                }
+                addDancerToWaitlist(dancer);
             }
         }
+    }
+    private void addDancerToWaitlist(Dancer dancer) {
+        // если есть свободные партнёры в списке одидания
+        var waitlist = dancer.sex.equals(Dancer.Sex.GIRL) ? this.girls : this.boys;
+        if (waitlist.isEmpty()) {
+            var otherList = dancer.sex.equals(Dancer.Sex.GIRL) ? this.boys : this.girls;
+            if (!otherList.isEmpty()) {
+                if (dancer.sex.equals(Dancer.Sex.GIRL))
+                    addPair(otherList.get(0), dancer);
+                else
+                    addPair(dancer, otherList.get(0));
+                return;
+            }
+        }
+        // добавить в список ожидания
+        for (int i = 0; i < waitlist.size(); ++i)
+        {
+            if (dancer.getNumber() < waitlist.get(i).getNumber()) {
+                waitlist.add(i, dancer);
+                return;
+            }
+        }
+        waitlist.add(dancer);
     }
 
     @Override
